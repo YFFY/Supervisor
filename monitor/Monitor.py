@@ -12,8 +12,7 @@ import datetime
 import socket
 import gzip
 import time
-import urllib
-import urllib2
+import requests
 from db.mongo import SupervisorDao
 
 
@@ -47,16 +46,17 @@ class Compare(object):
         kafkaFileHandler = gzip.open(kafkaFileName, 'rt')
         kafkaCount = 0
         for line in kafkaFileHandler:
-            if 'success' in line:
+            if 'yfnormalpf-kafka success' in line:
                 kafkaCount += 1
 
         batchFileList = os.listdir('/data2/druidBatchData/')
         batchCurrentFileList = [filename for filename in batchFileList if filename.startswith('ip-{0}.ec2.internaldata_{1}T'.format(self.localip, self.yesterday))]
         batchCount = 0
         for batchFile in batchCurrentFileList:
-            fobj = open(os.path.join('/data2/druidBatchData/', batchFile), 'r')
-            for data in fobj:
-                batchCount += 1
+            if batchFile.endswith('yfnormalpf.json'):
+                fobj = open(os.path.join('/data2/druidBatchData/', batchFile), 'r')
+                for data in fobj:
+                    batchCount += 1
 
         hadoopFileList = os.listdir('/data1/ymds_logs/yfnormalpf')
         hadoopCurrentFileList = [filename for filename in hadoopFileList if filename.startswith('ip-{0}.ec2.internal_{1}T'.format(self.localip, self.yesterday))]
@@ -90,11 +90,12 @@ class Query():
     def getHttpData(self, ip, param):
         self.convert2timestamp()
         report_param = param % (self.unix_start, self.unix_end)
-        print report_param
-        url = 'http://{0}:18080/report/report?'.format(ip)
-        encodeParam = urllib.urlencode({'report_param':report_param})
-        rsp = urllib2.urlopen(url, encodeParam).read()
-        return rsp
+        url = 'http://{0}:18080/report/report?report_param={1}'.format(ip, report_param)
+        r = requests.get(url)
+        if r.status_code == 200:
+            return r.text
+        else:
+            return None
 
     def getDateTime(self, dayOffset = 0):
         now = datetime.datetime.today()
@@ -103,15 +104,21 @@ class Query():
 
     def write2DB(self):
         start,end = self.getDateTime(-1), self.getDateTime()
-        repeatConv = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":["transaction_id","day"],"data":["conversion2","conversion"],"filters":{"$and":{"datasource":{"$eq":"hasoffer"},"log_tye":{"$eq":1},"conversion":{"$gt":1}}},"sort":[]}')
+        hasofferRepeatConv = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":["transaction_id","day"],"data":["conversion2","conversion"],"filters":{"$and":{"datasource":{"$eq":"hasoffer"},"log_tye":{"$eq":1},"conversion":{"$gt":1}}},"sort":[]}')
+        yeahmobiRepeatConv = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":["transaction_id","day"],"data":["click","conversion"],"filters":{"$and":{"datasource":{"$neq":"hasoffer"},"status":{"$eq":"Confirmed"},"log_tye":{"$eq":1},"conversion":{"$gt":1}}},"sort":[]}')
+        hasredundantConv = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"convesionLogQuery","pagination":{"size":50,"page":0}},"data":["conversion"],"group":["status"],"filters":{"$and":{"log_tye":{"$eq":"1"},"status":{"$neq":"Confirmed"}}}}')
         druidTotal = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":[],"data":["click","conversion"],"filters":{"$and":{}},"sort":[]}')
         hourData = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":["day","hour"],"data":["click","conversion"],"filters":{"$and":{}},"sort":[]}')
-        TdData = self.getHttpData('10.1.15.16', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"contrack_druid_datasource_ds","pagination":{"size":1000000,"page":0}},"group":[],"data":["clicks","convs"],"filters":{"$and":{}},"sort":[]}')
+        TdData = self.getHttpData('10.1.15.29', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"eve_druid_datasource_ds","pagination":{"size":1000000,"page":0}},"group":[],"data":["clicks","convs"],"filters":{"$and":{}},"sort":[]}')
+        unauthcountry = self.getHttpData('10.1.15.14', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":[],"data":["conversion2"],"filters":{"$and":{"datasource":{"$neq":"hasoffer"},"log_tye":{"$eq":1},"status":{"$eq":"Rejected"},"message":{"$eq":"unauthenticated country"}}},"sort":[]}')
         dataSet = dict()
-        dataSet['repeatConv'] = repeatConv
+        dataSet['hasofferRepeatConv'] = hasofferRepeatConv
+        dataSet['yeahmobiRepeatConv'] = yeahmobiRepeatConv
+        dataSet['hasredundantConv'] = hasredundantConv
         dataSet['druidTotal'] = druidTotal
         dataSet['hourData'] = hourData
         dataSet['TdData'] = TdData
+        dataSet['unauthcountry'] = unauthcountry
         self.dao.insertCollection(dataSet)
 
 if __name__ == '__main__':
