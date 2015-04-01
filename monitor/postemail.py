@@ -22,8 +22,7 @@ def getdbdata():
         cursor = conn.monitordb.monitor
 
     find = cursor.find()
-    day, collector_12, collector_13, total_collector, batch_12, batch_13, total_batch, hadoop_12, hadoop_13, total_hadoop, ymtotal, hasofferRepeatConv, yeahmobiRepeatConv, tdtotal, unauthcountrynum = 15 * [
-        0]
+    day, collector_12, collector_13, total_collector, batch_12, batch_13, total_batch, hadoop_12, hadoop_13, total_hadoop, ymtotal, yeahmobiRepeatConv, unauthcountrynum, nativeclickconv = 14 * [0]
     hasredundantConv = False
     missHour = False
     for data in find:
@@ -43,11 +42,6 @@ def getdbdata():
                 ymtotal = '{0} {1}'.format(ymtemp[0], ymtemp[1])
             else:
                 ymtotal = '{0} {1}'.format(ymtemp[1], ymtemp[0])
-        if 'hasofferRepeatConv' in data:
-            try:
-                hasofferRepeatConv = len(json.loads(data.get('hasofferRepeatConv')).get('data').get('data')) - 1
-            except ValueError as e:
-                raise e
         if 'yeahmobiRepeatConv' in data:
             try:
                 yeahmobiRepeatConv = len(json.loads(data.get('yeahmobiRepeatConv')).get('data').get('data')) - 1
@@ -63,9 +57,6 @@ def getdbdata():
                         pass
             except ValueError as e:
                 raise e
-        if data.has_key('TdData'):
-            tdtemp = json.loads(data.get('TdData')).get('data').get('data')[1]
-            tdtotal = '{0} {1}'.format(tdtemp[0], tdtemp[1])
         if 'hourData' in data:
             dataSet = json.loads(data.get('hourData')).get('data').get('data')[1:]
             for hdata in dataSet:
@@ -73,12 +64,17 @@ def getdbdata():
                     missHour += 'UTC: {0}-{1}\n'.format(hdata[0], hdata[1])
         if 'unauthcountry' in data:
             unauthcountrynum = json.loads(data.get('unauthcountry')).get('data').get('data')[1][0]
+        if 'nativeClickConv' in data:
+            nativeclickconv = json.loads(data.get('nativeClickConv')).get('data').get('data')[1][0]
     total_collector = collector_12 + collector_13
     total_batch = batch_12 + batch_13
     total_hadoop = hadoop_12 + hadoop_13
     cursor.remove()
-    return day, collector_12, collector_13, total_collector, batch_12, batch_13, total_batch, hadoop_12, hadoop_13, total_hadoop, ymtotal, hasofferRepeatConv, yeahmobiRepeatConv, hasredundantConv, tdtotal, missHour,unauthcountrynum
+    return day, collector_12, collector_13, total_collector, batch_12, batch_13, total_batch, hadoop_12, hadoop_13, total_hadoop, ymtotal, yeahmobiRepeatConv, hasredundantConv, missHour,unauthcountrynum, nativeclickconv
 
+def getTemplate():
+    with open('template', 'r') as f:
+        return f.read()
 
 def getHtmlContent():
 
@@ -87,88 +83,10 @@ def getHtmlContent():
         return None
     dataSet = dict(zip(
         ["day", "collector_12", "collector_13", "total_collector", "batch_12", "batch_13", "total_batch", "hadoop_12",
-         "hadoop_13", "total_hadoop", "ymtotal", "hasofferRepeatConv", "yeahmobiRepeatConv", "hasredundantConvData",
-         "tdtotal", "missHour","unauthcountrynum"],
+         "hadoop_13", "total_hadoop", "ymtotal", "yeahmobiRepeatConv", "hasredundantConvData",
+         "missHour","unauthcountrynum", "nativeclickconv"],
         dbdata))
-    html_template = """
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-    <table border="1">
-        <tr>
-            <td>{0}</td>
-            <td>10.1.15.12</td>
-            <td>10.1.15.13</td>
-            <td>总量</td>
-        </tr>
-        <tr>
-            <td>采集器</td>
-            <td>{1}</td>
-            <td>{2}</td>
-            <td>{3}</td>
-        </tr>
-        <tr>
-            <td>批量导数</td>
-            <td>{4}</td>
-            <td>{5}</td>
-            <td>{6}</td>
-        </tr>
-        <tr>
-            <td>HADOOP</td>
-            <td>{7}</td>
-            <td>{8}</td>
-            <td>{9}</td>
-        </tr>
-        <tr>
-            <td>联盟点击转化总量</td>
-            <td>{10}</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>Hasoffer重复转化</td>
-            <td>{11}</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>Yeahmobi重复转化</td>
-            <td>{12}</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>是否存在除Confirmed状态以外的转化</td>
-            <td>{13}</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>EVE点击转化总量</td>
-            <td>{14}</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>按小时查询DRUID是否有点击或者转化为0</td>
-            <td>{15}</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>unauthenticated country数量</td>
-            <td>{16}</td>
-            <td></td>
-            <td></td>
-        </tr>
-    </table>
-</body>
-</html>
-                    """
+    html_template = getTemplate()
     return html_template.format(dataSet.get('day'),
                                 dataSet.get('collector_12'),
                                 dataSet.get('collector_13'),
@@ -180,12 +98,11 @@ def getHtmlContent():
                                 dataSet.get('hadoop_13'),
                                 dataSet.get('total_hadoop'),
                                 dataSet.get('ymtotal'),
-                                dataSet.get('hasofferRepeatConv'),
                                 dataSet.get('yeahmobiRepeatConv'),
                                 convert(dataSet.get('hasredundantConv')),
-                                dataSet.get('tdtotal'),
                                 convert(dataSet.get('missHour')),
-                                dataSet.get('unauthcountrynum'))
+                                dataSet.get('unauthcountrynum'),
+                                dataSet.get('nativeclickconv'))
 
 
 smtpserver = 'smtp.163.com'
@@ -223,8 +140,8 @@ def sendmessage(server, to, subj, content):
 
 
 if __name__ == "__main__":
-    toList = ['bigdata@ndpmedia.com','robin.hu@ndpmedia.com', 'jeff.yu@ndpmedia.com', 'hardy.tan@ndpmedia.com']
-    #toList = ['jeff.yu@ndpmedia.com']
+    #toList = ['bigdata@ndpmedia.com','robin.hu@ndpmedia.com', 'jeff.yu@ndpmedia.com', 'hardy.tan@ndpmedia.com']
+    toList = ['jeff.yu@ndpmedia.com']
     subj = 'daily statistics at {0}'.format(getDate())
     text = getHtmlContent()
     server = connect()

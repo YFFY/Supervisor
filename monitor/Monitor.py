@@ -41,7 +41,6 @@ class Compare(object):
         return yesterday.strftime('%Y-%m-%d'), today.strftime('%Y-%m-%d')
 
     def write2DB(self):
-        # get cmd
         kafkaFileName = '/data2/kafkaService/kafka.log.{0}.gz'.format(self.yesterday)
         kafkaFileHandler = gzip.open(kafkaFileName, 'rt')
         kafkaCount = 0
@@ -104,21 +103,20 @@ class Query():
 
     def write2DB(self):
         start,end = self.getDateTime(-1), self.getDateTime()
-        hasofferRepeatConv = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":["transaction_id","day"],"data":["conversion2","conversion"],"filters":{"$and":{"datasource":{"$eq":"hasoffer"},"log_tye":{"$eq":1},"conversion":{"$gt":1}}},"sort":[]}')
         yeahmobiRepeatConv = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":["transaction_id","day"],"data":["click","conversion"],"filters":{"$and":{"datasource":{"$neq":"hasoffer"},"status":{"$eq":"Confirmed"},"log_tye":{"$eq":1},"conversion":{"$gt":1}}},"sort":[]}')
         hasredundantConv = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"convesionLogQuery","pagination":{"size":50,"page":0}},"data":["conversion"],"group":["status"],"filters":{"$and":{"log_tye":{"$eq":"1"},"status":{"$neq":"Confirmed"}}}}')
-        druidTotal = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":[],"data":["click","conversion"],"filters":{"$and":{}},"sort":[]}')
+        druidclick = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":[],"data":["click"],"filters":{"$and":{}},"sort":[]}')
+        druidconv = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":[],"data":["click"],"filters":{"$and":{"log_tye":{"$eq":"1"},"status":{"$neq":"Confirmed"},"datasource":{"$neq":"hasoffer"}}},"sort":[]}')
         hourData = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":["day","hour"],"data":["click","conversion"],"filters":{"$and":{}},"sort":[]}')
-        TdData = self.getHttpData('10.1.15.29', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"eve_druid_datasource_ds","pagination":{"size":1000000,"page":0}},"group":[],"data":["clicks","convs"],"filters":{"$and":{}},"sort":[]}')
         unauthcountry = self.getHttpData('10.1.15.14', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":[],"data":["conversion2"],"filters":{"$and":{"datasource":{"$neq":"hasoffer"},"log_tye":{"$eq":1},"status":{"$eq":"Rejected"},"message":{"$eq":"unauthenticated country"}}},"sort":[]}')
+        nativeClickConv = self.getHttpData('10.1.15.29', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"native_report_datasource","report_id":"1321231321","pagination":{"size":1000000,"page":0}},"data":["click" ,"conversion"],"group":[],"filters":{"$and":{}}}')
         dataSet = dict()
-        dataSet['hasofferRepeatConv'] = hasofferRepeatConv
         dataSet['yeahmobiRepeatConv'] = yeahmobiRepeatConv
         dataSet['hasredundantConv'] = hasredundantConv
-        dataSet['druidTotal'] = druidTotal
+        dataSet['druidTotal'] = [druidclick, druidconv]
         dataSet['hourData'] = hourData
-        dataSet['TdData'] = TdData
         dataSet['unauthcountry'] = unauthcountry
+        dataSet['nativeClickConv'] = nativeClickConv
         self.dao.insertCollection(dataSet)
 
 if __name__ == '__main__':
