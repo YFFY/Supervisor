@@ -106,14 +106,15 @@ class Query():
         yeahmobiRepeatConv = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":["transaction_id","day"],"data":["click","conversion"],"filters":{"$and":{"datasource":{"$neq":"hasoffer"},"status":{"$eq":"Confirmed"},"log_tye":{"$eq":1},"conversion":{"$gt":1}}},"sort":[]}')
         hasredundantConv = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"convesionLogQuery","pagination":{"size":50,"page":0}},"data":["conversion"],"group":["status"],"filters":{"$and":{"log_tye":{"$eq":"1"},"status":{"$neq":"Confirmed"}}}}')
         druidclick = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":[],"data":["click"],"filters":{"$and":{}},"sort":[]}')
-        druidconv = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":[],"data":["click"],"filters":{"$and":{"log_tye":{"$eq":"1"},"status":{"$neq":"Confirmed"},"datasource":{"$neq":"hasoffer"}}},"sort":[]}')
+        druidconv = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":[],"data":["click"],"filters":{"$and":{"log_tye":{"$eq":"1"},"status":{"$eq":"Confirmed"},"datasource":{"$neq":"hasoffer"}}},"sort":[]}')
         hourData = self.getHttpData('10.1.15.15', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":["day","hour"],"data":["click","conversion"],"filters":{"$and":{}},"sort":[]}')
         unauthcountry = self.getHttpData('10.1.15.14', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":[],"data":["conversion2"],"filters":{"$and":{"datasource":{"$neq":"hasoffer"},"log_tye":{"$eq":1},"status":{"$eq":"Rejected"},"message":{"$eq":"unauthenticated country"}}},"sort":[]}')
         nativeClickConv = self.getHttpData('10.1.15.29', '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"native_report_datasource","report_id":"1321231321","pagination":{"size":1000000,"page":0}},"data":["click" ,"conversion"],"group":[],"filters":{"$and":{}}}')
         dataSet = dict()
         dataSet['yeahmobiRepeatConv'] = yeahmobiRepeatConv
         dataSet['hasredundantConv'] = hasredundantConv
-        dataSet['druidTotal'] = [druidclick, druidconv]
+        dataSet['yeahmobiClick'] = druidclick
+        dataSet['yeahmobiConv'] = druidconv
         dataSet['hourData'] = hourData
         dataSet['unauthcountry'] = unauthcountry
         dataSet['nativeClickConv'] = nativeClickConv

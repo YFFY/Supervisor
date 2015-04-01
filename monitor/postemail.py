@@ -36,12 +36,10 @@ def getdbdata():
             collector_12 = data.get('collector')
             batch_12 = data.get('batch')
             hadoop_12 = data.get('hadoop')
-        if 'druidTotal' in data:
-            ymtemp = json.loads(data.get('druidTotal')).get('data').get('data')[1]
-            if ymtemp[0] > ymtemp[1]:
-                ymtotal = '{0} {1}'.format(ymtemp[0], ymtemp[1])
-            else:
-                ymtotal = '{0} {1}'.format(ymtemp[1], ymtemp[0])
+        if 'yeahmobiClick' and 'yeahmobiConv' in data:
+            ymclick = json.loads(data.get('yeahmobiClick')).get('data').get('data')[1][0]
+            ymconv = json.loads(data.get('yeahmobiConv')).get('data').get('data')[1][0]
+            ymtotal = [ymclick, ymconv]
         if 'yeahmobiRepeatConv' in data:
             try:
                 yeahmobiRepeatConv = len(json.loads(data.get('yeahmobiRepeatConv')).get('data').get('data')) - 1
