@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # --*-- coding:utf-8 --*--
 
-ISDEBUG = False  # imitator.py is only used to debug
+ISDEBUG = True  # imitator.py is only used to debug
 
 REALTIME_NODE_COUNT = 3  # three realtime node
 
@@ -61,18 +61,18 @@ RESULTTEMPLATE = """
 </tr>
 <tr>
   <td>$realtime_slave1_ip</td>
-  <td>$slave0_big</td>
-  <td>$slave0_zero</td>
-  <td>$slave0_four</td>
-  <td>$slave0_six</td>
+  <td>$slave1_big</td>
+  <td>$slave1_zero</td>
+  <td>$slave1_four</td>
+  <td>$slave1_six</td>
   <td>$realtime_slave1_total</td>
 </tr>
 <tr>
   <td>$realtime_slave2_ip</td>
-  <td>$slave0_big</td>
-  <td>$slave0_zero</td>
-  <td>$slave0_four</td>
-  <td>$slave0_six</td>
+  <td>$slave2_big</td>
+  <td>$slave2_zero</td>
+  <td>$slave2_four</td>
+  <td>$slave2_six</td>
   <td>$realtime_slave2_total</td>
 </tr>
 </table>
