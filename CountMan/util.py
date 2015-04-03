@@ -68,7 +68,7 @@ def getHtmlContent(collectorList, queryList, impalaList):
         s['slave1_zero'] = collectorList[1].get('ymds_druid_datasource0')
         s['slave1_four'] = collectorList[1].get('ymds_druid_datasource4')
         s['slave1_six'] = collectorList[1].get('ymds_druid_datasource6')
-        s['realtime_slave2_ip'] = collectorList[1].get('ip')
+        s['realtime_slave2_ip'] = collectorList[2].get('ip')
         s['slave2_big'] = collectorList[2].get('ymds_druid_datasource')
         s['slave2_zero'] = collectorList[2].get('ymds_druid_datasource0')
         s['slave2_four'] = collectorList[2].get('ymds_druid_datasource4')
