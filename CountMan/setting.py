@@ -1,7 +1,9 @@
 #! /usr/bin/env python
 # --*-- coding:utf-8 --*--
 
-ISDEBUG = True  # imitator.py is only used to debug
+ISDEBUG = False  # imitator.py is only used to debug
+
+LOGGING_LEVEL = "DEBUG"
 
 REALTIME_NODE_COUNT = 3  # three realtime node
 

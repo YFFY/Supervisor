@@ -42,6 +42,7 @@ class Counter(object):
                 self.realtimeTable[datasource] += singleCount
             except KeyError as ex:
                 traceback.print_exc()
+            setLog("count {0} successed, count = {1}".format(absFile, singleCount))
 
     @property
     def set2db(self):

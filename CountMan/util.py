@@ -6,6 +6,7 @@ import requests
 import pymongo
 import datetime
 import json
+import logging
 from string import Template
 import socket
 import traceback
@@ -13,6 +14,12 @@ import smtplib, email, sys
 from CountMan.setting import *
 from errcode import *
 from email.mime.text import MIMEText
+
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                    datefmt='%a, %d %b %Y %H:%M:%S',
+                    filename='../log/counter.log',
+                    filemode='a')
 
 
 def getLocalIp():
@@ -41,6 +48,9 @@ def getResponse(param, url = QUERYURL):
             return None
     except Exception as ex:
         traceback.print_exc()
+
+def setLog(message):
+    logging.debug(message)
 
 def hasRedundantConv(dataSet):
     for data in dataSet:
