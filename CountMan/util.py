@@ -6,6 +6,7 @@ import requests
 import pymongo
 import datetime
 import json
+import os
 import logging
 from string import Template
 import socket
@@ -23,7 +24,10 @@ logging.basicConfig(level=logging.DEBUG,
 
 
 def getLocalIp():
-    return socket.gethostbyname(socket.gethostname()).replace('.', '-')
+    localIP =  socket.gethostbyname(socket.gethostname()).replace('.', '-')
+    if localIP == "127.0.0.1":
+        localIP = os.popen('ifconfig').split('\n')[1].split()[1].split(':')[1].replace(',', '-')
+    return localIP
 
 def getDate():
     today = datetime.datetime.now()
