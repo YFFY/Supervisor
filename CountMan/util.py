@@ -99,11 +99,12 @@ def getHtmlContent(collectorList, queryList, impalaList):
     except Exception as ex:
         traceback.print_exc()
 
-    impalaResult = impalaList[0]
+
     try:
+        impalaResult = impalaList[0]
         s['impaladata'] = impalaResult.get('impalaClick', 0), impalaResult.get('impalaConv', 0)
     except Exception as ex:
-        traceback.print_exc()
+        s['impaladata'] = -1, -1
 
     try:
         return t.substitute(s)
