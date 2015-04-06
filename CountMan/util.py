@@ -161,3 +161,7 @@ class DatabaseInterface(object):
             return self.monitor.find()
         else:
             return None
+
+    def deleteRecord(self):
+        if self.connectionStatus:
+            self.monitor.remove({})

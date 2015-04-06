@@ -42,10 +42,13 @@ class Sender(object):
     def __init__(self):
         self.parser = Parser()
         self.emailer = Emailer()
+        self.dber = DatabaseInterface()
 
     def getHtmlContent(self):
         htmlContent = self.parser.getParserResult()
-        self.emailer.sendMessage(getEmailTitle(), htmlContent)
+        sendStatus = self.emailer.sendMessage(getEmailTitle(), htmlContent)
+        if sendStatus:
+            self.dber.deleteRecord()
 
 
 if __name__ == '__main__':
