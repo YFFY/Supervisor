@@ -23,7 +23,7 @@ from email.mime.text import MIMEText
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename=os.path.join(os.path.split(os.path.abspath(sys.path[0]))[0], "log\counter.log"),
+                    filename=os.path.join(os.path.split(os.path.abspath(sys.path[0]))[0], "log/counter.log"),
                     filemode='a')
 
 
