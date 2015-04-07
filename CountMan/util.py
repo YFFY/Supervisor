@@ -30,7 +30,8 @@ logging.basicConfig(level=logging.DEBUG,
 def getLocalIp():
     localIP =  socket.gethostbyname(socket.gethostname()).replace('.', '-')
     if localIP == "127-0-0-1":
-        localIP = os.popen('ifconfig').read().split('\n')[1].split()[1].split(':')[1].replace(',', '-')
+        tempString = os.popen('/sbin/ifconfig').readlines()
+        localIP = tempString[1].split()[1].split(':')[1].replace('.', '-')
     return localIP
 
 def getDate():
