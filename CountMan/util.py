@@ -25,7 +25,7 @@ logging.basicConfig(level=logging.DEBUG,
 
 def getLocalIp():
     localIP =  socket.gethostbyname(socket.gethostname()).replace('.', '-')
-    if localIP == "127.0.0.1":
+    if localIP == "127-0-0-1":
         localIP = os.popen('ifconfig').split('\n')[1].split()[1].split(':')[1].replace(',', '-')
     return localIP
 
