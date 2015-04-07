@@ -7,6 +7,36 @@ LOGGING_LEVEL = "DEBUG"
 
 REALTIME_NODE_COUNT = 3  # three realtime node
 
+DATASOURCE_LIST = "ymds_druid_datasource", "ymds_druid_datasource.0", "ymds_druid_datasource.4", "ymds_druid_datasource.6"
+
+REALTIME_QUERY_TEMPLATE = """{
+  "queryType" : "timeseries",
+  "dataSource" : {
+    "type" : "table",
+    "name" : "%s"
+  },
+  "intervals" : {
+    "type" : "LegacySegmentSpec",
+    "intervals" : [ "%sT00:00:00.000Z/%sT00:00:00.000Z" ]
+  },
+  "filter" : null,
+  "granularity" : {
+    "type" : "all"
+  },
+  "aggregations" : [ {
+    "type" : "longSum",
+    "name" : "click",
+    "fieldName" : "click"
+  }, {
+    "type" : "longSum",
+    "name" : "conversion",
+    "fieldName" : "conversion"
+  } ],
+  "postAggregations" : [ ],
+  "context" : null
+}"""
+
+
 RESULTMAP = {
     "realtime_slave0_ip":"",
     "slave0_big":0,
@@ -27,6 +57,10 @@ RESULTMAP = {
     "sum_datasource_zero":0,
     "sum_datasource_four":0,
     "sum_datasource_six":0,
+    "broker_datasource":0,
+    "broker_datasource_zero":0,
+    "broker_datasource_four":0,
+    "broker_datasource_six":0,
     "ymduplicateconv":0,
     "ymredundantconv":0,
     "ymdata":0,
@@ -34,7 +68,6 @@ RESULTMAP = {
     "ymunauthcountry":0,
     "impaladata":0
 }
-
 
 # email template
 RESULTTEMPLATE = """
@@ -47,7 +80,7 @@ RESULTTEMPLATE = """
 <body>
 <table border="1">
 <tr>
-  <td></td>
+  <td>consumer log</td>
   <td>datasource</td>
   <td>datasource.0</td>
   <td>datasource.4</td>
@@ -80,6 +113,23 @@ RESULTTEMPLATE = """
   <td>$sum_datasource_zero</td>
   <td>$sum_datasource_four</td>
   <td>$sum_datasource_six</td>
+</tr>
+</table>
+<br>
+<table border="1">
+<tr>
+  <td>consumer log</td>
+  <td>datasource</td>
+  <td>datasource.0</td>
+  <td>datasource.4</td>
+  <td>datasource.6</td>
+</tr>
+<tr>
+  <td>$realtime_slave0_ip</td>
+  <td>$slave0_big</td>
+  <td>$slave0_zero</td>
+  <td>$slave0_four</td>
+  <td>$slave0_six</td>
 </tr>
 </table>
 <br>
@@ -133,11 +183,13 @@ QUERYPARAM = {
 if ISDEBUG:
     REALTIMEDIR = "/data/tmpdata/druid_consumer_log"
     MONGODB_IP = "172.20.1.184"
+    BROKER_URL = "http://172.20.0.22:8080/druid/v2/?pretty"
     STATISTICSDAY = 1 # today
     IMPALA_IP = "salve-72"
 else:
     REALTIMEDIR = "/tmpdata/druid_consumer_log"
     MONGODB_IP = "10.1.5.60"
+    BROKER_URL = "http://10.1.5.30:8080/druid/v2/?pretty"
     STATISTICSDAY = 0 # yesterday
     IMPALA_IP = "ip-10-1-33-22.ec2.internal"
 

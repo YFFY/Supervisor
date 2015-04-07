@@ -34,6 +34,7 @@ def getDate():
     yesterday = today + datetime.timedelta(days=-1)
     return yesterday.strftime('%Y-%m-%d'), today.strftime('%Y-%m-%d')
 
+
 def datetime2timestamp(dt):
      s = time.mktime(time.strptime(dt, '%Y-%m-%d'))
      return int(s)
@@ -56,6 +57,20 @@ def getResponse(param, url = QUERYURL):
 def setLog(message):
     logging.debug(message)
 
+def getBrokerQueryResult():
+    s = Template(REALTIME_QUERY_TEMPLATE)
+    datasourceTable = dict()
+    for ds in DATASOURCE_LIST:
+        queryParam = REALTIME_QUERY_TEMPLATE % (ds, getDate()[0], getDate()[1])
+        r = requests.post(BROKER_URL, data=queryParam)
+        data = json.loads(r.text)[0]
+        try:
+            key = ds.replace('.', '_')
+            datasourceTable[key] = data.get('result').get('click'), data.get('result').get('conversion')
+        except Exception as ex:
+            traceback.print_exc()
+    return datasourceTable
+
 def hasRedundantConv(dataSet):
     for data in dataSet:
         if data[1] != 0:
@@ -68,7 +83,7 @@ def hashourDataEqualsZero(dataSet):
             return "Exist:{0}".format(data)
     return "NotExist"
 
-def getHtmlContent(collectorList, queryList, impalaList):
+def getHtmlContent(collectorList, queryList, impalaList, brokerList):
     t = Template(RESULTTEMPLATE)
     s = RESULTMAP
     try:
@@ -110,6 +125,20 @@ def getHtmlContent(collectorList, queryList, impalaList):
         s['impaladata'] = impalaResult.get('impalaClick', 0), impalaResult.get('impalaConv', 0)
     except Exception as ex:
         s['impaladata'] = -1, -1
+
+    try:
+        return t.substitute(s)
+    except UnicodeError as ex:
+        traceback.print_exc()
+
+    try:
+        brokerResult = brokerList[0]
+        s['broker_datasource'] = brokerResult.get('ymds_druid_datasource').get('click'), brokerResult.get('ymds_druid_datasource').get('conversion')
+        s['broker_datasource_zero'] = brokerResult.get('ymds_druid_datasource.0').get('click'), brokerResult.get('ymds_druid_datasource.0').get('conversion')
+        s['broker_datasource_four'] = brokerResult.get('ymds_druid_datasource.4').get('click'), brokerResult.get('ymds_druid_datasource.4').get('conversion')
+        s['broker_datasource_six'] = brokerResult.get('ymds_druid_datasource.6').get('click'), brokerResult.get('ymds_druid_datasource.6').get('conversion')
+    except Exception as ex:
+        traceback.print_exc()
 
     try:
         return t.substitute(s)

@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bccd4347-7e41-475c-b191-f107e5b79fb7" name="Default" comment="">
-      <change type="DELETED" beforePath="E:\code\Supervisor\.idea\vcs.xml" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CountMan/broker.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CountMan/maint.py" afterPath="$PROJECT_DIR$/CountMan/maint.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CountMan/setting.py" afterPath="$PROJECT_DIR$/CountMan/setting.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CountMan/util.py" afterPath="$PROJECT_DIR$/CountMan/util.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Supervisor.iws" />
@@ -38,14 +41,15 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/CountMan/counter.py" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/CountMan/errcode.py" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/CountMan/imitator.py" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/CountMan/impala.py" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/CountMan/maint.py" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/CountMan/queryer.py" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/CountMan/setting.py" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/CountMan/util.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/CountMan/broker.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/CountMan/counter.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/CountMan/imitator.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/CountMan/maint.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/CountMan/impala.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/CountMan/setting.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/CountMan/errcode.py" root0="SKIP_INSPECTION" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -61,15 +65,16 @@
         <option value="$PROJECT_DIR$/CountMan/__init__.py" />
         <option value="$PROJECT_DIR$/CountMan/sender.py" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/CountMan/queryer.py" />
         <option value="$PROJECT_DIR$/impala.py" />
         <option value="$PROJECT_DIR$/CountMan/imitator.py" />
+        <option value="$PROJECT_DIR$/CountMan/errcode.py" />
         <option value="$PROJECT_DIR$/CountMan/impala.py" />
         <option value="$PROJECT_DIR$/CountMan/counter.py" />
+        <option value="$PROJECT_DIR$/CountMan/queryer.py" />
+        <option value="$PROJECT_DIR$/CountMan/maint.py" />
+        <option value="$PROJECT_DIR$/CountMan/broker.py" />
         <option value="$PROJECT_DIR$/CountMan/setting.py" />
         <option value="$PROJECT_DIR$/CountMan/util.py" />
-        <option value="$PROJECT_DIR$/CountMan/errcode.py" />
-        <option value="$PROJECT_DIR$/CountMan/maint.py" />
       </list>
     </option>
   </component>
@@ -79,8 +84,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="754" />
+    <option name="width" value="1616" />
+    <option name="height" value="886" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -120,20 +125,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Supervisor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Supervisor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Supervisor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="log" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -474,15 +465,39 @@
       <option name="project" value="LOCAL" />
       <updated>1428298894645</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="update impala data used int() method if this data is string">
+      <created>1428373024224</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1428373024224</updated>
+    </task>
+    <task id="LOCAL-00006" summary="fix getlocalip method use &quot;-&quot; instead use &quot;.&quot;">
+      <created>1428373959741</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1428373959741</updated>
+    </task>
+    <task id="LOCAL-00007" summary="modify get sum datasource data">
+      <created>1428377246220</created>
+      <option name="number" value="00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1428377246220</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fix one bug:&#10;&#10;modify os.popen() to os.popen().read()">
+      <created>1428377964348</created>
+      <option name="number" value="00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1428377964348</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <frame x="-8" y="-8" width="1616" height="886" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20644216" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21410257" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32980132" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -546,7 +561,11 @@
     <MESSAGE value="Fix Some Bugs:&#10;&#10;1, change $neq:Confirmed to $eq:Confirmed&#10;2, change parse yeahmobi data" />
     <MESSAGE value="add logging module" />
     <MESSAGE value="add clear record after send email success method" />
-    <option name="LAST_COMMIT_MESSAGE" value="add clear record after send email success method" />
+    <MESSAGE value="update impala data used int() method if this data is string" />
+    <MESSAGE value="fix getlocalip method use &quot;-&quot; instead use &quot;.&quot;" />
+    <MESSAGE value="modify get sum datasource data" />
+    <MESSAGE value="fix one bug:&#10;&#10;modify os.popen() to os.popen().read()" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix one bug:&#10;&#10;modify os.popen() to os.popen().read()" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -555,13 +574,34 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/CountMan/impala.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CountMan/counter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="561" max-vertical-offset="1003">
+          <caret line="38" column="40" selection-start-line="38" selection-start-column="40" selection-end-line="38" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CountMan/util.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3009">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/CountMan/maint.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1782" max-vertical-offset="2500">
           <caret line="72" column="5" selection-start-line="72" selection-start-column="5" selection-end-line="72" selection-end-column="5" />
-          <folding>
-            <element signature="e#51#62#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -569,9 +609,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2680">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#51#60#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -579,9 +616,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1782" max-vertical-offset="2500">
           <caret line="72" column="5" selection-start-line="72" selection-start-column="5" selection-end-line="72" selection-end-column="5" />
-          <folding>
-            <element signature="e#51#62#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -589,9 +623,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2680">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#51#60#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -599,9 +630,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3000">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#51#62#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -609,16 +637,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1942" max-vertical-offset="2660">
           <caret line="118" column="32" selection-start-line="118" selection-start-column="17" selection-end-line="118" selection-end-column="32" />
-          <folding>
-            <element signature="e#51#60#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CountMan/impala.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37988827" vertical-offset="0" max-vertical-offset="716">
-          <caret line="19" column="12" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="12" />
         </state>
       </provider>
     </entry>
@@ -629,57 +647,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CountMan/queryer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6625767" vertical-offset="0" max-vertical-offset="652">
-          <caret line="25" column="30" selection-start-line="25" selection-start-column="30" selection-end-line="25" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CountMan/counter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.63496935" vertical-offset="378" max-vertical-offset="1152">
-          <caret line="44" column="12" selection-start-line="44" selection-start-column="12" selection-end-line="44" selection-end-column="83" />
-          <folding>
-            <element signature="e#51#60#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CountMan/setting.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08450704" vertical-offset="0" max-vertical-offset="2736">
-          <caret line="3" column="15" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CountMan/util.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.68801314" vertical-offset="2011" max-vertical-offset="3096">
-          <caret line="135" column="37" selection-start-line="135" selection-start-column="19" selection-end-line="135" selection-end-column="37" />
-          <folding>
-            <element signature="e#51#62#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CountMan/errcode.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.14469454" vertical-offset="0" max-vertical-offset="622">
           <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CountMan/maint.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79742765" vertical-offset="440" max-vertical-offset="1098">
-          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-          <folding>
-            <element signature="e#51#62#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -687,15 +658,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="622">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/log/count.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="622">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -703,7 +665,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.20257235" vertical-offset="0" max-vertical-offset="622">
           <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -711,7 +672,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="6228">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
       <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
@@ -722,6 +682,61 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.115755625" vertical-offset="0" max-vertical-offset="1080">
           <caret line="4" column="14" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CountMan/maint.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="132" max-vertical-offset="1020">
+          <caret line="39" column="68" selection-start-line="39" selection-start-column="68" selection-end-line="39" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CountMan/queryer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.303155" vertical-offset="0" max-vertical-offset="729">
+          <caret line="14" column="74" selection-start-line="14" selection-start-column="74" selection-end-line="14" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CountMan/counter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.76954734" vertical-offset="0" max-vertical-offset="1003">
+          <caret line="38" column="40" selection-start-line="38" selection-start-column="40" selection-end-line="38" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CountMan/impala.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2611732" vertical-offset="0" max-vertical-offset="716">
+          <caret line="14" column="31" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CountMan/setting.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35614526" vertical-offset="0" max-vertical-offset="3536">
+          <caret line="15" column="16" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CountMan/util.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33240223" vertical-offset="527" max-vertical-offset="3298">
+          <caret line="58" column="0" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CountMan/broker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34979424" vertical-offset="0" max-vertical-offset="729">
+          <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
           <folding />
         </state>
       </provider>

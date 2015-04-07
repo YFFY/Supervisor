@@ -21,20 +21,23 @@ class Parser(object):
             collectorList = list()
             queryList = list()
             impalaList = list()
+            brokerList = list()
             for result in self.rawResult:
                 if "ip" in result:
                     collectorList.append(result)
                 elif "YMCLICK" in result:
                     queryList.append(result)
-                else:
+                elif "impalaClick":
                     impalaList.append(result)
+                else:
+                    brokerList.append(result)
         except Exception as ex:
             traceback.print_exc()
         if len(collectorList) != REALTIME_NODE_COUNT:
             return REALTIME_DATA_NOT_ENOUGH
         if not queryList:
             return QUERY_DATA_IS_NONE
-        return getHtmlContent(collectorList, queryList, impalaList)
+        return getHtmlContent(collectorList, queryList, impalaList, brokerList)
 
 
 class Sender(object):
