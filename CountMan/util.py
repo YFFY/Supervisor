@@ -1,12 +1,16 @@
 #! /usr/bin/env python
 # --*-- coding:utf-8 --*--
 
+import os
+import sys
+sys.path.append(os.path.split(os.path.abspath(sys.path[0]))[0])
+
+
 import time
 import requests
 import pymongo
 import datetime
 import json
-import os
 import logging
 from string import Template
 import socket

@@ -2,7 +2,9 @@
 # --*-- coding:utf-8 --*--
 
 import os
-import traceback
+import sys
+sys.path.append(os.path.split(os.path.abspath(sys.path[0]))[0])
+
 from CountMan.setting import IMPALA_IP
 from CountMan.util import getDate, DatabaseInterface
 

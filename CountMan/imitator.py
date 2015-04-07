@@ -4,9 +4,10 @@
 
 # This script is used to zip realtime file
 
-
 import os
-import multiprocessing
+import sys
+sys.path.append(os.path.split(os.path.abspath(sys.path[0]))[0])
+
 from CountMan.setting import REALTIMEDIR
 import requests
 import time

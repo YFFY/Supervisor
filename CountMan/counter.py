@@ -2,8 +2,11 @@
 # --*-- coding:utf-8 --*--
 
 import os
+import sys
+sys.path.append(os.path.split(os.path.abspath(sys.path[0]))[0])
+
+
 import gzip
-import traceback
 from CountMan.util import *
 from CountMan.setting import *
 from CountMan.errcode import *
