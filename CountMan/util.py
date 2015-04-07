@@ -19,7 +19,7 @@ from email.mime.text import MIMEText
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename='../log/counter.log',
+                    filename=os.path.join(os.path.split(os.path.abspath(sys.path[0]))[0], "log\counter.log"),
                     filemode='a')
 
 
@@ -127,16 +127,11 @@ def getHtmlContent(collectorList, queryList, impalaList, brokerList):
         s['impaladata'] = -1, -1
 
     try:
-        return t.substitute(s)
-    except UnicodeError as ex:
-        traceback.print_exc()
-
-    try:
         brokerResult = brokerList[0]
-        s['broker_datasource'] = brokerResult.get('ymds_druid_datasource').get('click'), brokerResult.get('ymds_druid_datasource').get('conversion')
-        s['broker_datasource_zero'] = brokerResult.get('ymds_druid_datasource.0').get('click'), brokerResult.get('ymds_druid_datasource.0').get('conversion')
-        s['broker_datasource_four'] = brokerResult.get('ymds_druid_datasource.4').get('click'), brokerResult.get('ymds_druid_datasource.4').get('conversion')
-        s['broker_datasource_six'] = brokerResult.get('ymds_druid_datasource.6').get('click'), brokerResult.get('ymds_druid_datasource.6').get('conversion')
+        s['broker_datasource'] = brokerResult.get('ymds_druid_datasource')
+        s['broker_datasource_zero'] = brokerResult.get('ymds_druid_datasource_0')
+        s['broker_datasource_four'] = brokerResult.get('ymds_druid_datasource_4')
+        s['broker_datasource_six'] = brokerResult.get('ymds_druid_datasource_6')
     except Exception as ex:
         traceback.print_exc()
 

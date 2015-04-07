@@ -80,7 +80,7 @@ RESULTTEMPLATE = """
 <body>
 <table border="1">
 <tr>
-  <td>consumer log</td>
+  <td>Consumer Log</td>
   <td>datasource</td>
   <td>datasource.0</td>
   <td>datasource.4</td>
@@ -118,24 +118,24 @@ RESULTTEMPLATE = """
 <br>
 <table border="1">
 <tr>
-  <td>consumer log</td>
+  <td>Broker Query</td>
   <td>datasource</td>
   <td>datasource.0</td>
   <td>datasource.4</td>
   <td>datasource.6</td>
 </tr>
 <tr>
-  <td>$realtime_slave0_ip</td>
-  <td>$slave0_big</td>
-  <td>$slave0_zero</td>
-  <td>$slave0_four</td>
-  <td>$slave0_six</td>
+  <td></td>
+  <td>$broker_datasource</td>
+  <td>$broker_datasource_zero</td>
+  <td>$broker_datasource_four</td>
+  <td>$broker_datasource_six</td>
 </tr>
 </table>
 <br>
 <table border="1">
 <tr>
-  <td>Query Content</td>
+  <td>Resin Query</td>
   <td>Query Result</td>
 </tr>
 <tr>
@@ -151,7 +151,7 @@ RESULTTEMPLATE = """
   <td>$ymdata</td>
 </tr>
 <tr>
-  <td>YeahMobi Per Hour Click and Conv</td>
+  <td>YeahMobi Click = 0 or Conv = 0 in Per Hour</td>
   <td>$ymperhourdata</td>
 </tr>
 <tr>

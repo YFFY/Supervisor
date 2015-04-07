@@ -5,7 +5,7 @@ import json
 import traceback
 from CountMan.setting import *
 from CountMan.errcode import *
-from CountMan.util import DatabaseInterface, getHtmlContent, Emailer, getEmailTitle
+from CountMan.util import DatabaseInterface, getHtmlContent, Emailer, getEmailTitle, setLog
 
 
 class Parser(object):
@@ -24,12 +24,16 @@ class Parser(object):
             brokerList = list()
             for result in self.rawResult:
                 if "ip" in result:
+                    setLog("get collector: {0}".format(result))
                     collectorList.append(result)
                 elif "YMCLICK" in result:
+                    setLog("get query: {0}".format(result))
                     queryList.append(result)
-                elif "impalaClick":
+                elif "impalaClick" in result:
+                    setLog("get impala: {0}".format(result))
                     impalaList.append(result)
                 else:
+                    setLog("get broker: {0}".format(result))
                     brokerList.append(result)
         except Exception as ex:
             traceback.print_exc()
@@ -37,6 +41,7 @@ class Parser(object):
             return REALTIME_DATA_NOT_ENOUGH
         if not queryList:
             return QUERY_DATA_IS_NONE
+        setLog("get html content success")
         return getHtmlContent(collectorList, queryList, impalaList, brokerList)
 
 
@@ -47,7 +52,8 @@ class Sender(object):
         self.emailer = Emailer()
         self.dber = DatabaseInterface()
 
-    def getHtmlContent(self):
+    @property
+    def sendEmail(self):
         htmlContent = self.parser.getParserResult()
         sendStatus = self.emailer.sendMessage(getEmailTitle(), htmlContent)
         if sendStatus:
@@ -56,4 +62,4 @@ class Sender(object):
 
 if __name__ == '__main__':
     s = Sender()
-    s.getHtmlContent()
+    s.sendEmail
