@@ -23,9 +23,10 @@ RESULTMAP = {
     "slave2_zero":0,
     "slave2_four":0,
     "slave2_six":0,
-    "realtime_slave0_total":0,
-    "realtime_slave1_total":0,
-    "realtime_slave2_total":0,
+    "sum_datasource":0,
+    "sum_datasource_zero":0,
+    "sum_datasource_four":0,
+    "sum_datasource_six":0,
     "ymduplicateconv":0,
     "ymredundantconv":0,
     "ymdata":0,
@@ -51,7 +52,6 @@ RESULTTEMPLATE = """
   <td>datasource.0</td>
   <td>datasource.4</td>
   <td>datasource.6</td>
-  <td>total</td>
 </tr>
 <tr>
   <td>$realtime_slave0_ip</td>
@@ -59,7 +59,6 @@ RESULTTEMPLATE = """
   <td>$slave0_zero</td>
   <td>$slave0_four</td>
   <td>$slave0_six</td>
-  <td>$realtime_slave0_total</td>
 </tr>
 <tr>
   <td>$realtime_slave1_ip</td>
@@ -67,7 +66,6 @@ RESULTTEMPLATE = """
   <td>$slave1_zero</td>
   <td>$slave1_four</td>
   <td>$slave1_six</td>
-  <td>$realtime_slave1_total</td>
 </tr>
 <tr>
   <td>$realtime_slave2_ip</td>
@@ -75,7 +73,13 @@ RESULTTEMPLATE = """
   <td>$slave2_zero</td>
   <td>$slave2_four</td>
   <td>$slave2_six</td>
-  <td>$realtime_slave2_total</td>
+</tr>
+<tr>
+  <td>total</td>
+  <td>$sum_datasource</td>
+  <td>$sum_datasource_zero</td>
+  <td>$sum_datasource_four</td>
+  <td>$sum_datasource_six</td>
 </tr>
 </table>
 <br>

@@ -87,9 +87,10 @@ def getHtmlContent(collectorList, queryList, impalaList):
         s['slave2_zero'] = collectorList[2].get('ymds_druid_datasource0')
         s['slave2_four'] = collectorList[2].get('ymds_druid_datasource4')
         s['slave2_six'] = collectorList[2].get('ymds_druid_datasource6')
-        s['realtime_slave0_total'] = s.get('slave0_big') + s.get('slave0_zero') + s.get('slave0_four') + s.get('slave0_six')
-        s['realtime_slave1_total'] = s.get('slave1_big') + s.get('slave1_zero') + s.get('slave1_four') + s.get('slave1_six')
-        s['realtime_slave2_total'] = s.get('slave2_big') + s.get('slave2_zero') + s.get('slave2_four') + s.get('slave2_six')
+        s['sum_datasource'] = s.get('slave0_big') + s.get('slave1_big') + s.get('slave2_big')
+        s['sum_datasource_zero'] = s.get('slave0_zero') + s.get('slave1_zero') + s.get('slave1_zero')
+        s['sum_datasource_four'] = s.get('slave0_four') + s.get('slave1_four') + s.get('slave2_four')
+        s['sum_datasource_six'] = s.get('slave0_six') + s.get('slave1_six') + s.get('slave2_six')
     except Exception as ex:
         traceback.print_exc()
 
