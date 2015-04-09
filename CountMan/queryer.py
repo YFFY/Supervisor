@@ -21,6 +21,7 @@ class Queryer(object):
     @property
     def set2db(self):
         self.getData()
+        setLog("get query result:{0}".format(self.dataSet))
         self.dao.insertCollection(self.dataSet)
 
 if __name__ == '__main__':

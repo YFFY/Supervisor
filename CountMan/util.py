@@ -24,7 +24,7 @@ logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S',
                     filename=os.path.join(os.path.split(os.path.abspath(sys.path[0]))[0], "log/counter.log"),
-                    filemode='a')
+                    filemode='w')
 
 
 def getLocalIp():
@@ -67,6 +67,7 @@ def getBrokerQueryResult():
     datasourceTable = dict()
     for ds in DATASOURCE_LIST:
         queryParam = REALTIME_QUERY_TEMPLATE % (ds, getDate()[0], getDate()[1])
+        setLog("get broker param:{0}".format(queryParam))
         r = requests.post(BROKER_URL, data=queryParam)
         data = json.loads(r.text)[0]
         try:

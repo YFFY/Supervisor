@@ -62,7 +62,9 @@ class Sender(object):
         htmlContent = self.parser.getParserResult()
         sendStatus = self.emailer.sendMessage(getEmailTitle(), htmlContent)
         if sendStatus:
+            setLog("send email success")
             self.dber.deleteRecord()
+            setLog("delete record success")
 
 
 if __name__ == '__main__':

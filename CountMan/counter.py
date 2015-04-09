@@ -50,6 +50,7 @@ class Counter(object):
     @property
     def set2db(self):
         self.getCount()
+        setLog("get counter result:{0}".format(self.realtimeTable))
         self.dao.insertCollection(self.realtimeTable)
 
 if __name__ == '__main__':

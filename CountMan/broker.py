@@ -5,7 +5,7 @@
 import os
 import sys
 sys.path.append(os.path.split(os.path.abspath(sys.path[0]))[0])
-
+from CountMan.util import setLog
 from CountMan.util import getBrokerQueryResult, DatabaseInterface
 
 class Broker(object):
@@ -19,6 +19,7 @@ class Broker(object):
     @property
     def set2db(self):
         self.getBrokerResult()
+        setLog("get broker result:{0}".format(self.result))
         if self.dber.connectionStatus:
             self.dber.insertCollection(self.result)
 
