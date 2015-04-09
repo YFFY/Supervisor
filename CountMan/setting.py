@@ -195,8 +195,8 @@ else:
 
 
 MONGODB_PORT = 27017
-TOLIST = ['jeff.yu@ndpmedia.com']
-#TOLIST = ['bigdata@ndpmedia.com','robin.hu@ndpmedia.com', 'jeff.yu@ndpmedia.com', 'hardy.tan@ndpmedia.com']
+#TOLIST = ['jeff.yu@ndpmedia.com']
+TOLIST = ['bigdata@ndpmedia.com','robin.hu@ndpmedia.com', 'jeff.yu@ndpmedia.com', 'hardy.tan@ndpmedia.com']
 SMTPSERVER = 'smtp.163.com'
 SMTPPORT = '25'
 SMTPUSER = '15251826346@163.com'
