@@ -98,6 +98,71 @@ DUPLICATE_CONV_TMPLATE = """{
   "context" : null
 }"""
 
+DUPLICATE_CONV_TID_TMPLATE = """{
+  "queryType" : "groupBy",
+  "dataSource" : {
+    "type" : "table",
+    "name" : "ymds_druid_datasource"
+  },
+  "intervals" : {
+    "type" : "LegacySegmentSpec",
+    "intervals" : [ "%s.000Z/%s.000Z" ]
+  },
+  "filter" : {
+    "type" : "and",
+    "fields" : [ {
+      "type" : "not",
+      "field" : {
+        "type" : "selector",
+        "dimension" : "datasource",
+        "value" : "hasoffer"
+      }
+    }, {
+      "type" : "selector",
+      "dimension" : "log_tye",
+      "value" : "1"
+    }, {
+      "type" : "selector",
+      "dimension" : "status",
+      "value" : "Confirmed"
+    } ]
+  },
+  "granularity" : {
+    "type" : "all"
+  },
+  "dimensions" : [ {
+    "type" : "typed",
+    "dimension" : "transaction_id",
+    "outputName" : "transaction_id",
+    "dimType" : "PLAIN"
+  },
+   {
+    "type" : "typed",
+    "dimension" : "conv_time",
+    "outputName" : "conv_time",
+    "dimType" : "PLAIN"
+  }],
+  "aggregations" : [ {
+    "type" : "longSum",
+    "name" : "conversion",
+    "fieldName" : "conversion"
+  } ],
+  "postAggregations" : [ ],
+  "having" : {
+    "type" : "and",
+    "havingSpecs" : [ {
+      "type" : "greaterThan",
+      "aggregation" : "conversion",
+      "value" : 1
+    } ]
+  },
+  "orderBy" : {
+    "type" : "default",
+    "columns" : [ ],
+    "limit" : 10000
+  },
+  "context" : null
+}"""
 
 RESULTMAP = {
     "realtime_slave0_ip":"",

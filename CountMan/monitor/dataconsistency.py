@@ -49,11 +49,11 @@ class Monitor(object):
                           dimension query result: {1}
                           timeseries query result: {2}""".format(group, dimesion_map, no_dimension_map)
                 self.logger.error(content)
-                # status = self.emailer.sendMessage(title, content)
-                # if status:
-                #     self.logger.info('send email success')
-                # else:
-                #     self.logger.error('send email failed')
+                status = self.emailer.sendMessage(title, content)
+                if status:
+                    self.logger.info('send email success')
+                else:
+                    self.logger.error('send email failed')
 
 
 if __name__ == '__main__':

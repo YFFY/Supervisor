@@ -13,6 +13,7 @@ class Queryer(object):
     def __init__(self):
         self.dao = DatabaseInterface()
         self.dataSet = dict()
+        self.logger = getLogger('root')
 
     def getData(self):
         for queryKey in QUERYPARAM:
@@ -21,6 +22,7 @@ class Queryer(object):
     @property
     def set2db(self):
         self.getData()
+        self.logger.info('get query data: {0} success'.format(self.dataSet))
         self.dao.insertCollection(self.dataSet)
 
 if __name__ == '__main__':

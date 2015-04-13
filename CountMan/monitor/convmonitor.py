@@ -9,7 +9,7 @@ import datetime
 import json
 import string
 import requests
-from CountMan.monitor.setting import DUPLICATE_CONV_TMPLATE, BROKER_URL
+from CountMan.monitor.setting import DUPLICATE_CONV_TMPLATE, BROKER_URL, DUPLICATE_CONV_TID_TMPLATE
 from CountMan.monitor.util import getLogger, Emailer
 
 class DuplicateConvMonitor(object):
@@ -28,21 +28,27 @@ class DuplicateConvMonitor(object):
         self.endhour = end.strftime(self.format)
 
     def get_param(self):
-        self.param = DUPLICATE_CONV_TMPLATE % (self.beginhour, self.endhour)
+        self.tid_param = DUPLICATE_CONV_TMPLATE % (self.beginhour, self.endhour)
+        self.tid_convtime_param = DUPLICATE_CONV_TID_TMPLATE % (self.beginhour, self.endhour)
 
     @property
     def monitor(self):
-        r = requests.post(BROKER_URL, data=self.param)
-        if isinstance(json.loads(r.text), list):
-            self.logger.info('no duplicate conv found in {0} - {1}'.format(self.beginhour, self.endhour))
-        else:
-            title = 'Warn: found duplicate conv from {0} to {1}'.format(self.beginhour, self.endhour)
-            content = r.text
-            status = self.emiler.sendMessage(title, content)
-            if status:
-                self.logger.info('send email success!')
+        rlist = list()
+        r1 = requests.post(BROKER_URL, data=self.conv_param)
+        r2 = requests.post(BROKER_URL, data=self.tid_convtime_param)
+        rlist.append(r1)
+        rlist.append(r2)
+        for r in rlist:
+            if isinstance(json.loads(r.text), list):
+                self.logger.info('no duplicate conv found in {0} - {1}'.format(self.beginhour, self.endhour))
             else:
-                self.logger.info('send email failed!')
+                title = 'Warn: found duplicate conv from {0} to {1}'.format(self.beginhour, self.endhour)
+                content = r.text
+                status = self.emiler.sendMessage(title, content)
+                if status:
+                    self.logger.info('send email success!')
+                else:
+                    self.logger.info('send email failed!')
 
 if __name__ == '__main__':
     d = DuplicateConvMonitor()
