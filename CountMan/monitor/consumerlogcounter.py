@@ -34,19 +34,20 @@ class Counter(object):
                     for fileName in os.listdir(self.realtimeDir)
                     if self.statisticsDay in fileName and fileName.endswith('.tar.gz')]
         if not fileList:
-            return NO_FILE_FOUND_IN_DIR
-        for absFile in fileList:
-            singleCount = 0
-            with gzip.open(absFile, 'r') as fz:
-                for line in fz:
-                    if 'isThrow:false' in line:
-                        singleCount += 1
-            datasource = '_'.join(os.path.split(absFile)[1].split('-')[0].split('_')[:3]).replace('.', '')
-            try:
-                self.realtimeTable[datasource] += singleCount
-            except KeyError as ex:
-                traceback.print_exc()
-            self.logger.info("count {0} successed, count = {1}".format(absFile, singleCount))
+            self.logger.info('no realtime consumer file found')
+        else:
+            for absFile in fileList:
+                singleCount = 0
+                with gzip.open(absFile, 'r') as fz:
+                    for line in fz:
+                        if 'isThrow:false' in line:
+                            singleCount += 1
+                datasource = '_'.join(os.path.split(absFile)[1].split('-')[0].split('_')[:3]).replace('.', '')
+                try:
+                    self.realtimeTable[datasource] += singleCount
+                except KeyError as ex:
+                    traceback.print_exc()
+                self.logger.info("count {0} successed, count = {1}".format(absFile, singleCount))
 
     @property
     def set2db(self):
