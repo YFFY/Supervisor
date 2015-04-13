@@ -93,7 +93,7 @@ DUPLICATE_CONV_TMPLATE = """{
   "orderBy" : {
     "type" : "default",
     "columns" : [ ],
-    "limit" : 10000
+    "limit" : 500000
   },
   "context" : null
 }"""
@@ -159,7 +159,7 @@ DUPLICATE_CONV_TID_TMPLATE = """{
   "orderBy" : {
     "type" : "default",
     "columns" : [ ],
-    "limit" : 10000
+    "limit" : 500000
   },
   "context" : null
 }"""
@@ -335,12 +335,10 @@ SMTPUSER = '15251826346@163.com'
 SMTPPASSWORD = 'bmeB500!'
 
 
-
-DIMENSION = [choice(("aff_id","offer_id")),
+DIMENSION = [choice(("aff_id","offer_id","aff_manager","adv_manager","adv_id")),
              choice(("country",)),
-             choice(("platform_id",)),
-             choice(("browser",)),
-             choice(("day","hour"))]
+             choice(("platform_id","browser","device_type")),
+             choice(("day","hour","week","month","year"))]
 METRIC = ["click", "conversion", "cost", "revenue", "profit"]
 
 QUERYURL = "http://resin-yeahmobi-214401877.us-east-1.elb.amazonaws.com:18080/report/report?report_param="
@@ -456,3 +454,15 @@ NO_DIMENSION_PARAM = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"da
 SUM_METRIC_MAP = {u'conversion': 0, u'revenue': 0.0, u'profit': 0.0, u'cpc': 0.0, u'arpa': 0.00, u'rpc': 0.0, u'cost': 0.0, u'acpa': 0.0, u'cr': 0.0, u'click': 0}
 
 COMPARE_THRESHOLD = 0.05
+
+
+###########################################################
+#     broker  10.1.5.30                                   #
+#     consumerlogcounter  10.1.5.20/21/24                 #
+#     convmonitor         10.1.5.30                       #
+#     dataconsistency     10.1.5.60                       #
+#     impala              10.1.15.18                      #
+#     maint               10.1.5.60                       #
+#     queryCountStatic    10.1.15.14/15                   #
+#     queryer             10.1.5.60                       #
+###########################################################
