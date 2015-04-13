@@ -128,6 +128,18 @@ def getSumMetricMap(result):
     else:
         return dict(zip(key, value[0]))
 
+def get_affid():
+    result = getResponse(AFFID_PARAM)
+    affidList = list()
+    try:
+        data = json.loads(result).get('data').get('data')
+        for d in data[1:]:
+            affid = d[0]
+            if affid not in ["-1", "1"]:
+                affidList.append(affid)
+    except Exception as ex:
+        traceback.print_exc()
+    return affidList
 
 def getSortedMap(result):
     metricMap = getSumMetricMap(result)
@@ -269,3 +281,6 @@ class Equaler(object):
             if abs(self.result.get(key) - other.result.get(key)) > COMPARE_THRESHOLD:
                 return False
         return True
+
+if __name__ == '__main__':
+    get_affid()

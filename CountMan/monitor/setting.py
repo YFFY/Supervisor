@@ -450,7 +450,8 @@ QUERY_COUNT_PATH = '/mnt/realquery'
 
 METIRC_TABLE = {u'conversion': 0, u'revenue': 0, u'profit': 0, u'cost': 0, u'click': 0}
 
-DIMENSION_PARAM = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"ForDataConsistency","pagination":{"size":100000,"page":0}},"data":%s,"group":%s,"filters":{"$and":{}}}'
+AFFID_PARAM = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"ForDataConsistency","pagination":{"size":100000,"page":0}},"data":["click","conversion"],"group":["aff_id"],"filters":{"$and":{}}}'
+DIMENSION_PARAM = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"ForDataConsistency","pagination":{"size":100000,"page":0}},"data":%s,"group":%s,"filters":{"$and":{"aff_id":{"$eq":"%s"}}}}'
 NO_DIMENSION_PARAM = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"ForDataConsistency","pagination":{"size":100000,"page":0}},"data":%s,"group":[],"filters":{"$and":{}}}'
 SUM_METRIC_MAP = {u'conversion': 0, u'revenue': 0.0, u'profit': 0.0, u'cpc': 0.0, u'arpa': 0.00, u'rpc': 0.0, u'cost': 0.0, u'acpa': 0.0, u'cr': 0.0, u'click': 0}
 
