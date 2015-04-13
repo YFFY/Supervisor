@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 # --*-- coding:utf-8 --*--
 
+from random import choice
+
 ISDEBUG = False  # imitator.py is only used to debug
 
 LOGGING_LEVEL = "DEBUG"
@@ -36,6 +38,66 @@ REALTIME_QUERY_TEMPLATE = """{
   "context" : null
 }"""
 
+DUPLICATE_CONV_TMPLATE = """{
+  "queryType" : "groupBy",
+  "dataSource" : {
+    "type" : "table",
+    "name" : "ymds_druid_datasource"
+  },
+  "intervals" : {
+    "type" : "LegacySegmentSpec",
+    "intervals" : [ "%s.000Z/%s.000Z" ]
+  },
+  "filter" : {
+    "type" : "and",
+    "fields" : [ {
+      "type" : "not",
+      "field" : {
+        "type" : "selector",
+        "dimension" : "datasource",
+        "value" : "hasoffer"
+      }
+    }, {
+      "type" : "selector",
+      "dimension" : "log_tye",
+      "value" : "1"
+    }, {
+      "type" : "selector",
+      "dimension" : "status",
+      "value" : "Confirmed"
+    } ]
+  },
+  "granularity" : {
+    "type" : "all"
+  },
+  "dimensions" : [ {
+    "type" : "typed",
+    "dimension" : "transaction_id",
+    "outputName" : "transaction_id",
+    "dimType" : "PLAIN"
+  } ],
+  "aggregations" : [ {
+    "type" : "longSum",
+    "name" : "conversion",
+    "fieldName" : "conversion"
+  } ],
+  "postAggregations" : [ ],
+  "having" : {
+    "type" : "and",
+    "havingSpecs" : [ {
+      "type" : "greaterThan",
+      "aggregation" : "conversion",
+      "value" : 1
+    } ]
+  },
+  "orderBy" : {
+    "type" : "default",
+    "columns" : [ ],
+    "limit" : 10000
+  },
+  "context" : null
+}"""
+
 
 RESULTMAP = {
     "realtime_slave0_ip":"",
@@ -66,7 +128,8 @@ RESULTMAP = {
     "ymdata":0,
     "ymperhourdata":0,
     "ymunauthcountry":0,
-    "impaladata":0
+    "impaladata":0,
+    "querycount":0
 }
 
 # email template
@@ -162,6 +225,10 @@ RESULTTEMPLATE = """
   <td>Impala Data</td>
   <td>$impaladata</td>
 </tr>
+<tr>
+  <td>Query Count</td>
+  <td>$querycount</td>
+</tr>
 </table>
 </body>
 </html>
@@ -183,7 +250,7 @@ QUERYPARAM = {
 if ISDEBUG:
     REALTIMEDIR = "/data/tmpdata/druid_consumer_log"
     MONGODB_IP = "172.20.1.184"
-    BROKER_URL = "http://172.20.0.22:8080/druid/v2/?pretty"
+    BROKER_URL = "http://54.210.60.55:8080/druid/v2/?pretty"
     STATISTICSDAY = 1 # today
     IMPALA_IP = "salve-72"
 else:
@@ -195,9 +262,131 @@ else:
 
 
 MONGODB_PORT = 27017
-#TOLIST = ['jeff.yu@ndpmedia.com']
-TOLIST = ['bigdata@ndpmedia.com','robin.hu@ndpmedia.com', 'jeff.yu@ndpmedia.com', 'hardy.tan@ndpmedia.com']
+TOLIST = ['jeff.yu@ndpmedia.com']
+#TOLIST = ['bigdata@ndpmedia.com','robin.hu@ndpmedia.com', 'jeff.yu@ndpmedia.com', 'hardy.tan@ndpmedia.com']
 SMTPSERVER = 'smtp.163.com'
 SMTPPORT = '25'
 SMTPUSER = '15251826346@163.com'
 SMTPPASSWORD = 'bmeB500!'
+
+
+
+DIMENSION = [choice(("aff_id","offer_id")),
+             choice(("country")),
+             choice(("platform_id",)),
+             choice(("browser",)),
+             choice(("day","hour"))]
+METRIC = ["click", "conversion", "cost", "revenue", "profit"]
+
+QUERYURL = "http://resin-yeahmobi-214401877.us-east-1.elb.amazonaws.com:18080/report/report?report_param="
+
+METRICMAP = {
+  "profit" : {
+    "alisa" : "profit",
+    "name" : "(revenue-cost)",
+    "formula" : "((count(revenue) - count(cost)) as profit)",
+    "level" : 2,
+    "precision" : 3
+  },
+  "epc" : {
+    "alisa" : "epc",
+    "name" : "(cost/click)",
+    "formula" : "(count(cost) / count(click) as epc)",
+    "level" : 2,
+    "precision" : 3
+  },
+  "conversion" : {
+    "alisa" : "conversion",
+    "name" : "count(conversion)",
+    "formula" : "(count(conversion) as conversion)",
+    "level" : 1,
+    "precision" : 0
+  },
+  "arpa" : {
+    "alisa" : "arpa",
+    "name" : "(revenue/conversion)",
+    "formula" : "(count(revenue) / count(conversion) as arpa)",
+    "level" : 2,
+    "precision" : 2
+  },
+  "click" : {
+    "alisa" : "click",
+    "name" : "count(click)",
+    "formula" : "(count(click) as click)",
+    "level" : 1,
+    "precision" : 0
+  },
+  "acpa" : {
+    "alisa" : "acpa",
+    "name" : "(cost/conversion)",
+    "formula" : "(count(cost) / count(conversion) as acpa)",
+    "level" : 2,
+    "precision" : 2
+  },
+  "cost" : {
+    "alisa" : "cost",
+    "name" : "count(cost)",
+    "formula" : "(count(cost) as cost)",
+    "level" : 1,
+    "precision" : 2
+  },
+  "cr" : {
+    "alisa" : "cr",
+    "name" : "(conversion/click)",
+    "formula" : "(count(conversion) / count(click) as cr)",
+    "level" : 2,
+    "precision" : 4
+  },
+  "rpc" : {
+    "alisa" : "rpc",
+    "name" : "(revenue/click)",
+    "formula" : "(count(revenue) / count(click) as rpc)",
+    "level" : 2,
+    "precision" : 3
+  },
+  "cpc" : {
+    "alisa" : "cpc",
+    "name" : "(cost/click)",
+    "formula" : "(count(cost) / count(click) as cpc)",
+    "level" : 2,
+    "precision" : 3
+  },
+  "unique_click" : {
+    "alisa" : "unique_click",
+    "name" : "count(unique_click)",
+    "formula" : "(count(unique_click) as unique_click)",
+    "level" : 1,
+    "precision" : 0
+  },
+  "revenue" : {
+    "alisa" : "revenue",
+    "name" : "count(revenue)",
+    "formula" : "(count(revenue) as revenue)",
+    "level" : 1,
+    "precision" : 3
+  },
+  "rows" : {
+    "alisa" : "rows",
+    "name" : "count(rows)",
+    "formula" : "(count(*) as rows)",
+    "level" : 1,
+    "precision" : 0
+  },
+  "conversion2" : {
+    "alisa" : "conversion2",
+    "name" : "count(conversion2)",
+    "formula" : "(count(conversion2) as conversion2)",
+    "level" : 1,
+    "precision" : 0
+  }
+}
+
+QUERY_COUNT_PATH = '/mnt/realquery'
+
+METIRC_TABLE = {u'conversion': 0, u'revenue': 0, u'profit': 0, u'cost': 0, u'click': 0}
+
+DIMENSION_PARAM = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"ForDataConsistency","pagination":{"size":100000,"page":0}},"data":%s,"group":%s,"filters":{"$and":{}}}'
+NO_DIMENSION_PARAM = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"ForDataConsistency","pagination":{"size":100000,"page":0}},"data":%s,"group":[],"filters":{"$and":{}}}'
+SUM_METRIC_MAP = {u'conversion': 0, u'revenue': 0.0, u'profit': 0.0, u'cpc': 0.0, u'arpa': 0.00, u'rpc': 0.0, u'cost': 0.0, u'acpa': 0.0, u'cr': 0.0, u'click': 0}
+
+COMPARE_THRESHOLD = 0.05

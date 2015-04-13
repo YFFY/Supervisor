@@ -9,22 +9,19 @@ sys.path.append(os.path.split(os.path.abspath(sys.path[0]))[0])
 import time
 import requests
 import pymongo
+import copy
 import datetime
 import json
 import logging
+import logging.config
 from string import Template
 import socket
 import traceback
-import smtplib, email, sys
-from CountMan.setting import *
-from errcode import *
+import smtplib, sys
+from CountMan.monitor.setting import *
+from CountMan.monitor.errcode import *
 from email.mime.text import MIMEText
-
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                    datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename=os.path.join(os.path.split(os.path.abspath(sys.path[0]))[0], "log/counter.log"),
-                    filemode='w')
+from CountMan.monitor.dataconsistency import *
 
 
 def getLocalIp():
@@ -59,8 +56,21 @@ def getResponse(param, url = QUERYURL):
     except Exception as ex:
         traceback.print_exc()
 
-def setLog(message):
-    logging.debug(message)
+def getResult(param, url = QUERYURL):
+    geturl = url + param
+    try:
+        r = requests.get(geturl)
+        if r.status_code == 200:
+            return r.text
+        else:
+            return None
+    except Exception as ex:
+        traceback.print_exc()
+
+def getLogger(loggername):
+    logging.config.fileConfig(os.path.join(os.path.split(os.path.abspath(sys.path[0]))[0], 'conf/loggerconf.ini'))
+    logger = logging.getLogger(loggername)
+    return logger
 
 def getBrokerQueryResult():
     s = Template(REALTIME_QUERY_TEMPLATE)
@@ -89,7 +99,48 @@ def hashourDataEqualsZero(dataSet):
             return "Exist:{0}".format(data)
     return "NotExist"
 
-def getHtmlContent(collectorList, queryList, impalaList, brokerList):
+def get_jsondata(result):
+    try:
+        return json.loads(result)
+    except Exception as ex:
+        traceback.print_exc()
+    return None
+
+def getSumMetricMap(result):
+    jsonResult = get_jsondata(result).get('data').get('data')
+    key = jsonResult[0]
+    value = jsonResult[1:]
+    if len(value) > 1:
+        metric_map = copy.deepcopy(METIRC_TABLE) # fix bug metric_map = METIRC_TABLE -> metric_map = copy.deepcopy(METIRC_TABLE)
+        for v in value:
+            data = dict(zip(key, v))
+            for metrickey in data:
+                if metrickey not in METRIC:
+                    pass
+                else:
+                    metric_map[metrickey] += data.get(metrickey)
+        for key in metric_map:
+            if key in METRICMAP:
+                precision = METRICMAP.get(key).get('precision')
+                if precision > 0:
+                    metric_map[key] = round(metric_map.get(key), precision)
+                else:
+                    metric_map[key] = int(metric_map.get(key))
+        return metric_map
+    else:
+        return dict(zip(key, value[0]))
+
+
+def getSortedMap(result):
+    metricMap = getSumMetricMap(result)
+    keys = metricMap.keys()
+    keys.sort()
+    values = [metricMap[key] for key in keys]
+    return json.dumps(dict(zip(keys, values)))
+
+
+
+def getHtmlContent(collectorList, queryList, impalaList, brokerList, querycountlist):
     t = Template(RESULTTEMPLATE)
     s = RESULTMAP
     try:
@@ -138,6 +189,12 @@ def getHtmlContent(collectorList, queryList, impalaList, brokerList):
         s['broker_datasource_zero'] = brokerResult.get('ymds_druid_datasource_0')
         s['broker_datasource_four'] = brokerResult.get('ymds_druid_datasource_4')
         s['broker_datasource_six'] = brokerResult.get('ymds_druid_datasource_6')
+    except Exception as ex:
+        traceback.print_exc()
+
+    try:
+        querycountResult = querycountlist[0]
+        s['querycount'] = querycountResult.get('querycount')
     except Exception as ex:
         traceback.print_exc()
 
@@ -201,3 +258,15 @@ class DatabaseInterface(object):
     def deleteRecord(self):
         if self.connectionStatus:
             self.monitor.remove({})
+
+class Equaler(object):
+
+    def __init__(self, result):
+        self.result = json.loads(result)
+
+    def __eq__(self, other):
+        keys = self.result.keys()
+        for key in keys:
+            if abs(self.result.get(key) - other.result.get(key)) > COMPARE_THRESHOLD:
+                return False
+        return True

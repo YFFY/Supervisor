@@ -5,18 +5,17 @@ import os
 import sys
 sys.path.append(os.path.split(os.path.abspath(sys.path[0]))[0])
 
-
-import json
 import traceback
-from CountMan.setting import *
-from CountMan.errcode import *
-from CountMan.util import DatabaseInterface, getHtmlContent, Emailer, getEmailTitle, setLog
+from CountMan.monitor.setting import *
+from CountMan.monitor.errcode import *
+from CountMan.monitor.util import DatabaseInterface, getHtmlContent, Emailer, getEmailTitle, getLogger
 
 
 class Parser(object):
 
     def __init__(self):
         self.dao = DatabaseInterface()
+        self.logger = getLogger("root")
         self.rawResult = self.dao.getQueryResult()
 
     def getParserResult(self):
@@ -26,19 +25,23 @@ class Parser(object):
             collectorList = list()
             queryList = list()
             impalaList = list()
+            querycountlist = list()
             brokerList = list()
             for result in self.rawResult:
                 if "ip" in result:
-                    setLog("get collector: {0}".format(result))
+                    self.logger.info("get collector: {0}".format(result))
                     collectorList.append(result)
                 elif "YMCLICK" in result:
-                    setLog("get query: {0}".format(result))
+                    self.logger.info("get query: {0}".format(result))
                     queryList.append(result)
                 elif "impalaClick" in result:
-                    setLog("get impala: {0}".format(result))
+                    self.logger.info("get impala: {0}".format(result))
                     impalaList.append(result)
+                elif "querycount" in result:
+                    self.logger.info("get query count: {0}".format(result))
+                    queryList.append(result)
                 else:
-                    setLog("get broker: {0}".format(result))
+                    self.logger.info("get broker: {0}".format(result))
                     brokerList.append(result)
         except Exception as ex:
             traceback.print_exc()
@@ -46,8 +49,8 @@ class Parser(object):
             return REALTIME_DATA_NOT_ENOUGH
         if not queryList:
             return QUERY_DATA_IS_NONE
-        setLog("get html content success")
-        return getHtmlContent(collectorList, queryList, impalaList, brokerList)
+        self.logger.info("get html content success")
+        return getHtmlContent(collectorList, queryList, impalaList, brokerList, querycountlist)
 
 
 class Sender(object):
@@ -62,9 +65,9 @@ class Sender(object):
         htmlContent = self.parser.getParserResult()
         sendStatus = self.emailer.sendMessage(getEmailTitle(), htmlContent)
         if sendStatus:
-            setLog("send email success")
+            self.logger.info("send email success")
             self.dber.deleteRecord()
-            setLog("delete record success")
+            self.logger.info("delete record success")
 
 
 if __name__ == '__main__':

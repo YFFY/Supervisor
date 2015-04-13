@@ -5,8 +5,8 @@ import os
 import sys
 sys.path.append(os.path.split(os.path.abspath(sys.path[0]))[0])
 
-from CountMan.setting import IMPALA_IP
-from CountMan.util import getDate, DatabaseInterface
+from CountMan.monitor.setting import IMPALA_IP
+from CountMan.monitor.util import getDate, DatabaseInterface
 
 def getImpalaData():
     impalaData = dict()

@@ -5,13 +5,13 @@
 import os
 import sys
 sys.path.append(os.path.split(os.path.abspath(sys.path[0]))[0])
-from CountMan.util import setLog
-from CountMan.util import getBrokerQueryResult, DatabaseInterface
+from CountMan.monitor.util import getBrokerQueryResult, DatabaseInterface, getLogger
 
 class Broker(object):
 
     def __init__(self):
         self.dber = DatabaseInterface()
+        self.logger = getLogger('root')
 
     def getBrokerResult(self):
         self.result = getBrokerQueryResult()
@@ -19,7 +19,6 @@ class Broker(object):
     @property
     def set2db(self):
         self.getBrokerResult()
-        setLog("get broker result:{0}".format(self.result))
         if self.dber.connectionStatus:
             self.dber.insertCollection(self.result)
 

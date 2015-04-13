@@ -5,8 +5,8 @@ import os
 import sys
 sys.path.append(os.path.split(os.path.abspath(sys.path[0]))[0])
 
-from CountMan.util import *
-from CountMan.setting import *
+from CountMan.monitor.util import *
+from CountMan.monitor.setting import *
 
 class Queryer(object):
 
@@ -21,7 +21,6 @@ class Queryer(object):
     @property
     def set2db(self):
         self.getData()
-        setLog("get query result:{0}".format(self.dataSet))
         self.dao.insertCollection(self.dataSet)
 
 if __name__ == '__main__':

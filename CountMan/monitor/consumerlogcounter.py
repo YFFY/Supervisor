@@ -7,9 +7,9 @@ sys.path.append(os.path.split(os.path.abspath(sys.path[0]))[0])
 
 
 import gzip
-from CountMan.util import *
-from CountMan.setting import *
-from CountMan.errcode import *
+from CountMan.monitor.util import *
+from CountMan.monitor.setting import *
+from CountMan.monitor.errcode import *
 
 class Counter(object):
 
@@ -17,6 +17,7 @@ class Counter(object):
         self.statisticsDay = getDate()[STATISTICSDAY]
         self.localip = getLocalIp()
         self.dao = DatabaseInterface()
+        self.logger = getLogger('root')
         self.realtimeDir = REALTIMEDIR
         self.realtimeTable = {
             "date": self.statisticsDay,
@@ -45,12 +46,12 @@ class Counter(object):
                 self.realtimeTable[datasource] += singleCount
             except KeyError as ex:
                 traceback.print_exc()
-            setLog("count {0} successed, count = {1}".format(absFile, singleCount))
+            self.logger.info("count {0} successed, count = {1}".format(absFile, singleCount))
 
     @property
     def set2db(self):
         self.getCount()
-        setLog("get counter result:{0}".format(self.realtimeTable))
+        self.logger.info("get counter result:{0}".format(self.realtimeTable))
         self.dao.insertCollection(self.realtimeTable)
 
 if __name__ == '__main__':
