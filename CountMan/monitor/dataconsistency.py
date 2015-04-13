@@ -37,7 +37,7 @@ class Monitor(object):
             dimension_result = getResult(dimension_param.replace("'", '"'))
             dimesion_map = getSortedMap(dimension_result)
             if not dimesion_map or not no_dimension_map:
-                self.logger.info('dimension query result: {0}\ntimeseries query result: {1}\n'.format(dimesion_map, no_dimension_map))
+                self.logger.info('result is not exist: dimension query result: {0}\ntimeseries query result: {1}\n'.format(dimesion_map, no_dimension_map))
                 return -1
             if Equaler(dimesion_map) == Equaler(no_dimension_map):
                 isPass = True

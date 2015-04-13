@@ -108,15 +108,15 @@ def getSumMetricMap(result):
     jsonResult = get_jsondata(result).get('data').get('data')
     key = jsonResult[0]
     value = jsonResult[1:]
-    if len(value) > 1:
+    if key != METRIC:
         metric_map = copy.deepcopy(METIRC_TABLE) # fix bug metric_map = METIRC_TABLE -> metric_map = copy.deepcopy(METIRC_TABLE)
         for v in value:
             data = dict(zip(key, v))
             for metrickey in data:
-                if metrickey not in METRIC:
-                    pass
-                else:
+                if metrickey in METRIC:
                     metric_map[metrickey] += data.get(metrickey)
+                else:
+                    pass
         for key in metric_map:
             if key in METRICMAP:
                 precision = METRICMAP.get(key).get('precision')
