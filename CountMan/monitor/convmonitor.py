@@ -34,7 +34,7 @@ class DuplicateConvMonitor(object):
     @property
     def monitor(self):
         rlist = list()
-        r1 = requests.post(BROKER_URL, data=self.conv_param)
+        r1 = requests.post(BROKER_URL, data=self.tid_param)
         r2 = requests.post(BROKER_URL, data=self.tid_convtime_param)
         rlist.append(r1)
         rlist.append(r2)
