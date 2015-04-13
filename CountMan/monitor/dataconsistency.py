@@ -40,11 +40,7 @@ class Monitor(object):
                 self.logger.info('result is not exist: dimension query result: {0}\ntimeseries query result: {1}\n'.format(dimesion_map, no_dimension_map))
                 return -1
             if Equaler(dimesion_map) == Equaler(no_dimension_map):
-                isPass = True
-            else:
-                isPass = False
-            if isPass:
-                self.logger.info("{0}\t{1}\n".format(isPass, group))
+                self.logger.info("{0}\t{1}\t{2}\n".format("pass", group, aff_id))
             else:
                 title = 'Warn : Detected data inconsistencies with group: {0} and aff_id: {1}'.format(group, aff_id)
                 content = """
