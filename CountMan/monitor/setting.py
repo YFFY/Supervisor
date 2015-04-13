@@ -272,7 +272,7 @@ SMTPPASSWORD = 'bmeB500!'
 
 
 DIMENSION = [choice(("aff_id","offer_id")),
-             choice(("country")),
+             choice(("country",)),
              choice(("platform_id",)),
              choice(("browser",)),
              choice(("day","hour"))]

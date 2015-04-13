@@ -1,7 +1,11 @@
 #! /usr/bin/env python
 # --*-- coding:utf-8 --*--
 
+
 import os
+import sys
+sys.path.append(os.path.split(os.path.split(os.path.abspath(sys.path[0]))[0])[0])
+
 import gzip
 from CountMan.monitor.util import *
 

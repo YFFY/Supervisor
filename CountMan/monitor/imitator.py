@@ -6,7 +6,7 @@
 
 import os
 import sys
-sys.path.append(os.path.split(os.path.abspath(sys.path[0]))[0])
+sys.path.append(os.path.split(os.path.split(os.path.abspath(sys.path[0]))[0])[0])
 
 from CountMan.monitor.setting import REALTIMEDIR
 import requests
