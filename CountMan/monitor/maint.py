@@ -39,7 +39,7 @@ class Parser(object):
                     impalaList.append(result)
                 elif "querycount" in result:
                     self.logger.info("get query count: {0}".format(result))
-                    queryList.append(result)
+                    querycountlist.append(result)
                 else:
                     self.logger.info("get broker: {0}".format(result))
                     brokerList.append(result)
@@ -59,6 +59,7 @@ class Sender(object):
         self.parser = Parser()
         self.emailer = Emailer()
         self.dber = DatabaseInterface()
+        self.logger = getLogger('root')
 
     @property
     def sendEmail(self):

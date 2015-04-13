@@ -21,7 +21,6 @@ import smtplib, sys
 from CountMan.monitor.setting import *
 from CountMan.monitor.errcode import *
 from email.mime.text import MIMEText
-from CountMan.monitor.dataconsistency import *
 
 
 def getLocalIp():
@@ -77,7 +76,6 @@ def getBrokerQueryResult():
     datasourceTable = dict()
     for ds in DATASOURCE_LIST:
         queryParam = REALTIME_QUERY_TEMPLATE % (ds, getDate()[0], getDate()[1])
-        setLog("get broker param:{0}".format(queryParam))
         r = requests.post(BROKER_URL, data=queryParam)
         data = json.loads(r.text)[0]
         try:
@@ -137,7 +135,6 @@ def getSortedMap(result):
     keys.sort()
     values = [metricMap[key] for key in keys]
     return json.dumps(dict(zip(keys, values)))
-
 
 
 def getHtmlContent(collectorList, queryList, impalaList, brokerList, querycountlist):
