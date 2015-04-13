@@ -9,7 +9,9 @@ class queryStatic(object):
 
     def __init__(self):
         self.staticday = getDate()[STATISTICSDAY]
+        self.logger = getLogger("root")
         self.dber = DatabaseInterface()
+        self.localip = getLocalIp()
         self.querycount = dict()
         self.get_file()
         self.get_count()
@@ -25,6 +27,8 @@ class queryStatic(object):
                 if 'query cost' in line:
                     count += 1
         self.querycount['querycount'] = count
+        self.querycount['localip'] = self.localip
+        self.logger.info("get query count: {0}".format(self.querycount))
 
     @property
     def set2db(self):

@@ -193,8 +193,10 @@ def getHtmlContent(collectorList, queryList, impalaList, brokerList, querycountl
         traceback.print_exc()
 
     try:
-        querycountResult = querycountlist[0]
-        s['querycount'] = querycountResult.get('querycount')
+        sumcount = 0
+        for querycountResult in querycountlist:
+            sumcount += querycountResult.get('querycount')
+        s['querycount'] = sumcount
     except Exception as ex:
         traceback.print_exc()
 
