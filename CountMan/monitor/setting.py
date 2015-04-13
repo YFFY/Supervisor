@@ -450,14 +450,14 @@ METIRC_TABLE = {u'conversion': 0, u'revenue': 0, u'profit': 0, u'cost': 0, u'cli
 
 AFFID_PARAM = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"ForDataConsistency","pagination":{"size":100000,"page":0}},"data":["click","conversion"],"group":["aff_id"],"filters":{"$and":{}}}'
 DIMENSION_PARAM = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"ForDataConsistency","pagination":{"size":100000,"page":0}},"data":%s,"group":%s,"filters":{"$and":{"aff_id":{"$eq":"%s"}}}}'
-NO_DIMENSION_PARAM = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"ForDataConsistency","pagination":{"size":100000,"page":0}},"data":%s,"group":[],"filters":{"$and":{}}}'
+NO_DIMENSION_PARAM = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"ForDataConsistency","pagination":{"size":100000,"page":0}},"data":%s,"group":[],"filters":{"$and":{"aff_id":{"$eq":"%s"}}}}'
 SUM_METRIC_MAP = {u'conversion': 0, u'revenue': 0.0, u'profit': 0.0, u'cpc': 0.0, u'arpa': 0.00, u'rpc': 0.0, u'cost': 0.0, u'acpa': 0.0, u'cr': 0.0, u'click': 0}
 
 COMPARE_THRESHOLD = 0.05
 
 
 ###########################################################
-#     broker  10.1.5.30                                   #
+#     broker              10.1.5.30                       #
 #     consumerlogcounter  10.1.5.20/21/24                 #
 #     convmonitor         10.1.5.30                       #
 #     dataconsistency     10.1.5.60                       #

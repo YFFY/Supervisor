@@ -28,11 +28,12 @@ class Monitor(object):
     def get_result(self):
         self.get_group()
         start, end = getTimestamp()
-        no_dimension_param = NO_DIMENSION_PARAM % (start, end, METRIC)
+        aff_id = choice(self.affidList)
+        no_dimension_param = NO_DIMENSION_PARAM % (start, end, METRIC, aff_id)
         no_dimension_result = getResult(no_dimension_param.replace("'", '"'))
         no_dimension_map = getSortedMap(no_dimension_result)
         for group in self.groupList:
-            dimension_param = DIMENSION_PARAM % (start, end, METRIC, list(group), choice(self.affidList))
+            dimension_param = DIMENSION_PARAM % (start, end, METRIC, list(group), aff_id)
             dimension_result = getResult(dimension_param.replace("'", '"'))
             dimesion_map = getSortedMap(dimension_result)
             if not dimesion_map or not no_dimension_map:
@@ -45,10 +46,12 @@ class Monitor(object):
             if isPass:
                 self.logger.info("{0}\t{1}\n".format(isPass, group))
             else:
-                title = 'Warn : Detected data inconsistencies with group : {0}'.format(group)
-                content = """group: {0}
-                          dimension query result: {1}
-                          timeseries query result: {2}""".format(group, dimesion_map, no_dimension_map)
+                title = 'Warn : Detected data inconsistencies with group: {0} and aff_id: {1}'.format(group, aff_id)
+                content = """
+                          aff_id: {0}
+                          group: {1}
+                          dimension query result: {2}
+                          timeseries query result: {3}""".format(aff_id, group, dimesion_map, no_dimension_map)
                 self.logger.error(content)
                 status = self.emailer.sendMessage(title, content)
                 if status:
