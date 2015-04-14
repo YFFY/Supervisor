@@ -9,7 +9,7 @@ LOGGING_LEVEL = "DEBUG"
 
 REALTIME_NODE_COUNT = 3  # three realtime node
 
-DATASOURCE_LIST = "ymds_druid_datasource", "ymds_druid_datasource.0", "ymds_druid_datasource.4", "ymds_druid_datasource.6"
+DATASOURCE_LIST = "ymds_druid_datasource", "ymds_druid_datasource.6"
 
 REALTIME_QUERY_TEMPLATE = """{
   "queryType" : "timeseries",
@@ -167,26 +167,16 @@ DUPLICATE_CONV_TID_TMPLATE = """{
 RESULTMAP = {
     "realtime_slave0_ip":"",
     "slave0_big":0,
-    "slave0_zero":0,
-    "slave0_four":0,
     "slave0_six":0,
     "realtime_slave1_ip":"",
     "slave1_big":0,
-    "slave1_zero":0,
-    "slave1_four":0,
     "slave1_six":0,
     "realtime_slave2_ip":"",
     "slave2_big":0,
-    "slave2_zero":0,
-    "slave2_four":0,
     "slave2_six":0,
     "sum_datasource":0,
-    "sum_datasource_zero":0,
-    "sum_datasource_four":0,
     "sum_datasource_six":0,
     "broker_datasource":0,
-    "broker_datasource_zero":0,
-    "broker_datasource_four":0,
     "broker_datasource_six":0,
     "ymduplicateconv":0,
     "ymredundantconv":0,
@@ -210,36 +200,26 @@ RESULTTEMPLATE = """
 <tr>
   <td>Consumer Log</td>
   <td>datasource</td>
-  <td>datasource.0</td>
-  <td>datasource.4</td>
   <td>datasource.6</td>
 </tr>
 <tr>
   <td>$realtime_slave0_ip</td>
   <td>$slave0_big</td>
-  <td>$slave0_zero</td>
-  <td>$slave0_four</td>
   <td>$slave0_six</td>
 </tr>
 <tr>
   <td>$realtime_slave1_ip</td>
   <td>$slave1_big</td>
-  <td>$slave1_zero</td>
-  <td>$slave1_four</td>
   <td>$slave1_six</td>
 </tr>
 <tr>
   <td>$realtime_slave2_ip</td>
   <td>$slave2_big</td>
-  <td>$slave2_zero</td>
-  <td>$slave2_four</td>
   <td>$slave2_six</td>
 </tr>
 <tr>
   <td>total</td>
   <td>$sum_datasource</td>
-  <td>$sum_datasource_zero</td>
-  <td>$sum_datasource_four</td>
   <td>$sum_datasource_six</td>
 </tr>
 </table>
@@ -248,15 +228,11 @@ RESULTTEMPLATE = """
 <tr>
   <td>Broker Query</td>
   <td>datasource</td>
-  <td>datasource.0</td>
-  <td>datasource.4</td>
   <td>datasource.6</td>
 </tr>
 <tr>
   <td></td>
   <td>$broker_datasource</td>
-  <td>$broker_datasource_zero</td>
-  <td>$broker_datasource_four</td>
   <td>$broker_datasource_six</td>
 </tr>
 </table>

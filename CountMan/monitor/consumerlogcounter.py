@@ -23,8 +23,6 @@ class Counter(object):
             "date": self.statisticsDay,
             "ip": self.localip,
             "ymds_druid_datasource" : 0,
-            "ymds_druid_datasource0" : 0,
-            "ymds_druid_datasource4" : 0,
             "ymds_druid_datasource6" : 0,
         }
 

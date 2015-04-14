@@ -159,22 +159,14 @@ def getHtmlContent(collectorList, queryList, impalaList, brokerList, querycountl
     try:
         s['realtime_slave0_ip'] = collectorList[0].get('ip')
         s['slave0_big'] = collectorList[0].get('ymds_druid_datasource')
-        s['slave0_zero'] = collectorList[0].get('ymds_druid_datasource0')
-        s['slave0_four'] = collectorList[0].get('ymds_druid_datasource4')
         s['slave0_six'] = collectorList[0].get('ymds_druid_datasource6')
         s['realtime_slave1_ip'] = collectorList[1].get('ip')
         s['slave1_big'] = collectorList[1].get('ymds_druid_datasource')
-        s['slave1_zero'] = collectorList[1].get('ymds_druid_datasource0')
-        s['slave1_four'] = collectorList[1].get('ymds_druid_datasource4')
         s['slave1_six'] = collectorList[1].get('ymds_druid_datasource6')
         s['realtime_slave2_ip'] = collectorList[2].get('ip')
         s['slave2_big'] = collectorList[2].get('ymds_druid_datasource')
-        s['slave2_zero'] = collectorList[2].get('ymds_druid_datasource0')
-        s['slave2_four'] = collectorList[2].get('ymds_druid_datasource4')
         s['slave2_six'] = collectorList[2].get('ymds_druid_datasource6')
         s['sum_datasource'] = s.get('slave0_big') + s.get('slave1_big') + s.get('slave2_big')
-        s['sum_datasource_zero'] = s.get('slave0_zero') + s.get('slave1_zero') + s.get('slave2_zero')
-        s['sum_datasource_four'] = s.get('slave0_four') + s.get('slave1_four') + s.get('slave2_four')
         s['sum_datasource_six'] = s.get('slave0_six') + s.get('slave1_six') + s.get('slave2_six')
     except Exception as ex:
         traceback.print_exc()
@@ -199,8 +191,6 @@ def getHtmlContent(collectorList, queryList, impalaList, brokerList, querycountl
     try:
         brokerResult = brokerList[0]
         s['broker_datasource'] = brokerResult.get('ymds_druid_datasource')
-        s['broker_datasource_zero'] = brokerResult.get('ymds_druid_datasource_0')
-        s['broker_datasource_four'] = brokerResult.get('ymds_druid_datasource_4')
         s['broker_datasource_six'] = brokerResult.get('ymds_druid_datasource_6')
     except Exception as ex:
         traceback.print_exc()
