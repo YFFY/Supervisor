@@ -35,7 +35,6 @@ def getDate():
     yesterday = today + datetime.timedelta(days=-1)
     return yesterday.strftime('%Y-%m-%d'), today.strftime('%Y-%m-%d')
 
-
 def datetime2timestamp(dt):
      s = time.mktime(time.strptime(dt, '%Y-%m-%d'))
      return int(s)
@@ -43,6 +42,11 @@ def datetime2timestamp(dt):
 def getTimestamp():
     start, end = getDate()
     return datetime2timestamp(start), datetime2timestamp(end)
+
+def getHourTimestamp():
+    currentHour = datetime.datetime.now()
+    previousHour = currentHour + datetime.timedelta(hours=-1)
+    return int(time.mktime(time.strptime(previousHour.strftime('%Y-%m-%d %H'), '%Y-%m-%d %H'))),int(time.mktime(time.strptime(currentHour.strftime('%Y-%m-%d %H'), '%Y-%m-%d %H')))
 
 def getResponse(param, url = QUERYURL):
     geturl = (url + param) % getTimestamp()
@@ -283,4 +287,4 @@ class Equaler(object):
         return True
 
 if __name__ == '__main__':
-    get_affid()
+    print getHourTimestamp()

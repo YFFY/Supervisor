@@ -3,10 +3,10 @@
 
 import os
 import sys
-sys.path.append(os.path.split(os.path.abspath(sys.path[0]))[0])
+sys.path.append(os.path.split(os.path.split(os.path.abspath(sys.path[0]))[0])[0])
 
 
-from CountMan.monitor.util import getTimestamp, getResult, getSortedMap, Equaler, getLogger, Emailer, get_affid
+from CountMan.monitor.util import getHourTimestamp, getResult, getSortedMap, Equaler, getLogger, Emailer, get_affid
 from CountMan.monitor.setting import *
 from itertools import combinations
 
@@ -27,7 +27,7 @@ class Monitor(object):
 
     def get_result(self):
         self.get_group()
-        start, end = getTimestamp()
+        start, end = getHourTimestamp()
         aff_id = choice(self.affidList)
         no_dimension_param = NO_DIMENSION_PARAM % (start, end, METRIC, aff_id)
         no_dimension_result = getResult(no_dimension_param.replace("'", '"'))
