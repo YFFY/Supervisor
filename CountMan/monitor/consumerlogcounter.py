@@ -38,7 +38,7 @@ class Counter(object):
                 singleCount = 0
                 with gzip.open(absFile, 'r') as fz:
                     for line in fz:
-                        if 'isThrow:false' in line:
+                        if 'partition' in line:
                             singleCount += 1
                 datasource = '_'.join(os.path.split(absFile)[1].split('-')[0].split('_')[:3]).replace('.', '')
                 try:
