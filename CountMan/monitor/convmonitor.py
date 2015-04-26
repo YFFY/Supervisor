@@ -30,6 +30,8 @@ class DuplicateConvMonitor(object):
     def get_param(self):
         self.tid_param = DUPLICATE_CONV_TMPLATE % (self.beginhour, self.endhour)
         self.tid_convtime_param = DUPLICATE_CONV_TID_TMPLATE % (self.beginhour, self.endhour)
+        self.logger.info('get broker transaction_id param:{0}'.format(self.tid_param))
+        self.logger.info('get broker transaction_id + conv_time param:{0}'.format(self.tid_convtime_param))
 
     @property
     def monitor(self):
@@ -39,7 +41,7 @@ class DuplicateConvMonitor(object):
         rlist.append(r1)
         rlist.append(r2)
         for r in rlist:
-            if isinstance(json.loads(r.text), list):
+            if r.text == '[ ]':
                 self.logger.info('no duplicate conv found in {0} - {1}'.format(self.beginhour, self.endhour))
             else:
                 title = 'Warn: found duplicate conv from {0} to {1}'.format(self.beginhour, self.endhour)
