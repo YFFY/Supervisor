@@ -17,21 +17,19 @@ class DuplicateConvMonitor(object):
     def __init__(self):
         self.format = '%Y-%m-%dT%H:00:00'
         self.emiler = Emailer()
-        begin = datetime.datetime.today()
         self.logger = getLogger('convmonitor')
-        self.beginhour = begin.strftime('%Y-%m-%dT00:00:00')
-        self.get_end()
+        self.get_trange()
         self.get_param()
 
-    def get_end(self):
+    def get_trange(self):
         end = datetime.datetime.now()
+        begin = end + datetime.timedelta(hours=-1)
+        self.beginhour = begin.strftime(self.format)
         self.endhour = end.strftime(self.format)
 
     def get_param(self):
         self.tid_param = DUPLICATE_CONV_TMPLATE % (self.beginhour, self.endhour)
         self.tid_convtime_param = DUPLICATE_CONV_TID_TMPLATE % (self.beginhour, self.endhour)
-        self.logger.info('get broker transaction_id param:{0}'.format(self.tid_param))
-        self.logger.info('get broker transaction_id + conv_time param:{0}'.format(self.tid_convtime_param))
 
     @property
     def monitor(self):
@@ -47,6 +45,7 @@ class DuplicateConvMonitor(object):
                 title = 'Warn: found duplicate conv from {0} to {1}'.format(self.beginhour, self.endhour)
                 content = r.text
                 status = self.emiler.sendMessage(title, content)
+                self.logger.info(r.text)
                 if status:
                     self.logger.info('send email success!')
                 else:
