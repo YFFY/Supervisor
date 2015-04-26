@@ -35,25 +35,25 @@ class DuplicateConvMonitor(object):
         self.tid_param = DUPLICATE_CONV_TMPLATE % (self.beginhour, self.endhour)
         self.tid_convtime_param = DUPLICATE_CONV_TID_TMPLATE % (self.beginhour, self.endhour)
 
-    @property
-    def monitor(self):
-        rlist = list()
-        r1 = requests.post(BROKER_URL, data=self.tid_param)
-        r2 = requests.post(BROKER_URL, data=self.tid_convtime_param)
-        rlist.append(r1)
-        rlist.append(r2)
-        for r in rlist:
+    def send(self, broker_param, title):
+        try:
+            r = requests.post(BROKER_URL, data = broker_param)
             if r.text == '[ ]':
-                self.logger.info('no duplicate conv found in {0} - {1}'.format(self.beginhour, self.endhour))
+                self.logger.info('not find duplicate conversions between {0} to {1}, get {2}'.format(self.beginhour, self.endhour, r.text))
             else:
-                title = 'Warn: found duplicate conv from {0} to {1}'.format(self.beginhour, self.endhour)
-                content = r.text
-                status = self.emiler.sendMessage(title, content)
-                self.logger.info(r.text)
+                self.logger.error('find duplicate conversions between {0} to {1}, get {2}'.format(self.beginhour, self.endhour, r.text))
+                status = self.emiler.sendMessage(title.format(self.beginhour, self.endhour), r.text)
                 if status:
                     self.logger.info('send email success!')
                 else:
                     self.logger.info('send email failed!')
+        except Exception as ex:
+            self.logger.error('error occuar when send http post to broker')
+
+    @property
+    def monitor(self):
+        self.send(self.tid_param, 'find duplicate conversions between {0} to {1}, param group: [transaction_id]')
+        self.send(self.tid_convtime_param, 'find duplicate conversions between {0} to {1}, param group: [transaction_id, conv_time]')
 
 if __name__ == '__main__':
     d = DuplicateConvMonitor()
