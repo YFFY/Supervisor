@@ -6,6 +6,7 @@ import sys
 sys.path.append(os.path.split(os.path.split(os.path.abspath(sys.path[0]))[0])[0])
 
 import datetime
+import time
 import json
 import string
 import requests
@@ -23,8 +24,11 @@ class DuplicateConvMonitor(object):
 
     def get_trange(self):
         end = datetime.datetime.now()
-        begin = end + datetime.timedelta(hours=-1)
-        self.beginhour = begin.strftime(self.format)
+        if end.hour == 0:
+            begin = datetime.datetime.today() + datetime.timedelta(days=-1)
+        else:
+            begin = datetime.datetime.today()
+        self.beginhour = begin.strftime('%Y-%m-%dT00:00:00')
         self.endhour = end.strftime(self.format)
 
     def get_param(self):
