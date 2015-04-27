@@ -56,8 +56,8 @@ class DuplicateConvMonitor(object):
 
     @property
     def monitor(self):
-        self.send(self.tid_param, 'find {0} duplicate conversions between {1} to {2}, param group: [transaction_id]')
-        self.send(self.tid_convtime_param, 'find {0} duplicate conversions between {1} to {2}, param group: [transaction_id, conv_time]')
+        self.send(self.tid_param, 'use: [transaction_id] find {0} duplicate conversions between {1} to {2}')
+        self.send(self.tid_convtime_param, 'use: [transaction_id, conv_time] find {0} duplicate conversions between {1} to {2}')
 
 if __name__ == '__main__':
     d = DuplicateConvMonitor()
