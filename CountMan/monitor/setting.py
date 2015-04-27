@@ -178,7 +178,6 @@ RESULTMAP = {
     "sum_datasource_six":0,
     "broker_datasource":0,
     "broker_datasource_six":0,
-    "ymduplicateconv":0,
     "ymredundantconv":0,
     "ymdata":0,
     "ymperhourdata":0,
@@ -241,10 +240,6 @@ RESULTTEMPLATE = """
 <tr>
   <td>Resin Query</td>
   <td>Query Result</td>
-</tr>
-<tr>
-  <td>YeahMobi Duplicate Conv</td>
-  <td>$ymduplicateconv</td>
 </tr>
 <tr>
   <td>status!=Confirmed&conversion=1</td>

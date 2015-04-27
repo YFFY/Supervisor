@@ -173,7 +173,6 @@ def getHtmlContent(collectorList, queryList, impalaList, brokerList, querycountl
 
     queryResult = queryList[0]
     try:
-        s['ymduplicateconv'] = json.loads(queryResult.get('YMDUPLICATECONV')).get('data').get('page').get('total')
         s['ymredundantconv'] = hasRedundantConv(json.loads(queryResult.get('YMREDUNDANTCONV')).get('data').get('data')[1:])
         s['ymdata'] = json.loads(queryResult.get('YMCLICK')).get('data').get('data')[1][0], json.loads(queryResult.get('YMCONV')).get('data').get('data')[1][0]
         s['ymperhourdata'] = hashourDataEqualsZero(json.loads(queryResult.get('YMPERHOURDATA')).get('data').get('data')[1:])
