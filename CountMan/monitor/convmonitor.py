@@ -42,7 +42,11 @@ class DuplicateConvMonitor(object):
                 self.logger.info('not find duplicate conversions between {0} to {1}, get {2}'.format(self.beginhour, self.endhour, r.text))
             else:
                 self.logger.error('find duplicate conversions between {0} to {1}, get {2}'.format(self.beginhour, self.endhour, r.text))
-                status = self.emiler.sendMessage(title.format(self.beginhour, self.endhour), r.text)
+                try:
+                    count = len(json.loads(r.text))
+                except Exception as ex:
+                    count = "many"
+                status = self.emiler.sendMessage(title.format(count, self.beginhour, self.endhour), r.text)
                 if status:
                     self.logger.info('send email success!')
                 else:
@@ -52,8 +56,8 @@ class DuplicateConvMonitor(object):
 
     @property
     def monitor(self):
-        self.send(self.tid_param, 'find duplicate conversions between {0} to {1}, param group: [transaction_id]')
-        self.send(self.tid_convtime_param, 'find duplicate conversions between {0} to {1}, param group: [transaction_id, conv_time]')
+        self.send(self.tid_param, 'find {0} duplicate conversions between {1} to {2}, param group: [transaction_id]')
+        self.send(self.tid_convtime_param, 'find {0} duplicate conversions between {1} to {2}, param group: [transaction_id, conv_time]')
 
 if __name__ == '__main__':
     d = DuplicateConvMonitor()
