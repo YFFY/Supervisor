@@ -72,7 +72,7 @@ class DuplicateConvMonitor(object):
         title = 'use [transaction_id] find {0} duplicate conversions between {1} to {2}'.format(
             len(idList), self.beginhour, self.endhour
         )
-        content = idList
+        content = str(idList)
         self.send(title, content)
 
         idList = list()
@@ -83,7 +83,7 @@ class DuplicateConvMonitor(object):
         title = 'use [transaction_id, conv_time] find {0} duplicate conversions between {1} to {2}'.format(
             len(idList), self.beginhour, self.endhour
         )
-        content = idList
+        content = str(idList)
         self.send(title, content)
 
 
