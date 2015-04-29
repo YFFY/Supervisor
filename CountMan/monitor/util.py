@@ -77,18 +77,21 @@ def getOfferIdList():
             return offList
     return offList
 
+def getInterOfferList(internalOffers):
+    selectors = list()
+    for offer in internalOffers:
+        selector = copy.deepcopy(SELECTOR)
+        selector["value"] = offer.encode()
+        selectors.append(selector)
+    return selectors
 
 def getSplitOffers():
     offerList = getOfferIdList()
     splitedList = list()
-    selector = {"type" : "selector", "dimension" : "offer_id", "value" : ""}
     for i in range(0, len(offerList), OFFER_SPLIT_OFFSET):
-        internalList = list()
         internaloffers = offerList[i:i+OFFER_SPLIT_OFFSET]
-        for offer in internaloffers:
-            selector["value"] = offer.encode()
-            internalList.append(selector)
-        splitedList.append(internalList)
+        selectors = getInterOfferList(internaloffers)
+        splitedList.append(selectors)
     return splitedList
 
 

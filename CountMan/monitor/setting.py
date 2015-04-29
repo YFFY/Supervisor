@@ -428,7 +428,7 @@ METRICMAP = {
 QUERY_COUNT_PATH = '/mnt/realquery'
 
 METIRC_TABLE = {u'conversion': 0, u'revenue': 0, u'profit': 0, u'cost': 0, u'click': 0}
-
+SELECTOR = {"type" : "selector", "dimension" : "offer_id", "value" : ""}
 AFFID_PARAM = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"ForDataConsistency","pagination":{"size":100000,"page":0}},"data":["click","conversion"],"group":["aff_id"],"filters":{"$and":{}}}'
 DIMENSION_PARAM = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"ForDataConsistency","pagination":{"size":100000,"page":0}},"data":%s,"group":%s,"filters":{"$and":{"aff_id":{"$eq":"%s"}}}}'
 NO_DIMENSION_PARAM = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"data_source":"ymds_druid_datasource","report_id":"ForDataConsistency","pagination":{"size":100000,"page":0}},"data":%s,"group":[],"filters":{"$and":{"aff_id":{"$eq":"%s"}}}}'
