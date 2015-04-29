@@ -35,6 +35,7 @@ def getDate():
     yesterday = today + datetime.timedelta(days=-1)
     return yesterday.strftime('%Y-%m-%d'), today.strftime('%Y-%m-%d')
 
+
 def datetime2timestamp(dt):
      s = time.mktime(time.strptime(dt, '%Y-%m-%d'))
      return int(s)
@@ -47,6 +48,49 @@ def getHourTimestamp():
     currentHour = datetime.datetime.now()
     previousHour = currentHour + datetime.timedelta(hours=-1)
     return int(time.mktime(time.strptime(previousHour.strftime('%Y-%m-%d %H'), '%Y-%m-%d %H'))),int(time.mktime(time.strptime(currentHour.strftime('%Y-%m-%d %H'), '%Y-%m-%d %H')))
+
+
+def getOfferIdList():
+    offList = list()
+    param = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":["offer_id"],"data":["conversion"],"filters":{"$and":{}},"sort":[]}'
+    end = datetime.datetime.now()
+    start = end + datetime.timedelta(hours=-1)
+    unixstart = int(time.mktime(time.strptime(start.strftime('%Y-%m-%d %H:00:00'), '%Y-%m-%d %H:00:00')))
+    unixend = int(time.mktime(time.strptime(end.strftime('%Y-%m-%d %H:00:00'), '%Y-%m-%d %H:00:00')))
+    requestUrl = (QUERYURL + param) % (unixstart, unixend)
+    r = requests.get(requestUrl)
+    if r.status_code == 200:
+        content = r.text
+    else:
+        return offList
+    if isinstance(content, dict):
+        dataList = content.get('data').get('data')
+        for data in dataList:
+            offList.append(data[0])
+    else:
+        try:
+            jsonContent = json.loads(content)
+            dataList = jsonContent.get('data').get('data')
+            for data in dataList[1:]:
+                offList.append(data[0])
+        except Exception as ex:
+            return offList
+    return offList
+
+
+def getSplitOffers():
+    offerList = getOfferIdList()
+    splitedList = list()
+    selector = {"type" : "selector", "dimension" : "offer_id", "value" : ""}
+    for i in range(0, len(offerList), OFFER_SPLIT_OFFSET):
+        internalList = list()
+        internaloffers = offerList[i:i+OFFER_SPLIT_OFFSET]
+        for offer in internaloffers:
+            selector["value"] = offer
+            internalList.append(selector)
+        splitedList.append(internalList)
+    return splitedList
+
 
 def getResponse(param, url = QUERYURL):
     geturl = (url + param) % getTimestamp()
@@ -276,4 +320,4 @@ class Equaler(object):
         return True
 
 if __name__ == '__main__':
-    print getHourTimestamp()
+    print getSplitOffers()
