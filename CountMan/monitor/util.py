@@ -86,7 +86,7 @@ def getSplitOffers():
         internalList = list()
         internaloffers = offerList[i:i+OFFER_SPLIT_OFFSET]
         for offer in internaloffers:
-            selector["value"] = offer
+            selector["value"] = offer.encode()
             internalList.append(selector)
         splitedList.append(internalList)
     return splitedList
