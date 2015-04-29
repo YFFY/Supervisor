@@ -36,33 +36,56 @@ class DuplicateConvMonitor(object):
         self.tid_param = DUPLICATE_CONV_TMPLATE % (self.beginhour, self.endhour)
         self.tid_convtime_param = DUPLICATE_CONV_TID_TMPLATE % (self.beginhour, self.endhour)
 
-    def send(self, broker_param, title):
+    def get_transaction_id(self, broker_param):
+        idList = list()
         try:
             r = requests.post(BROKER_URL, data = broker_param)
-            if r.text == '[ ]':
+            if t.text == '[ ]':
                 self.logger.info('not find duplicate conversions between {0} to {1}, get {2}'.format(self.beginhour, self.endhour, r.text))
             else:
-                self.logger.error('find duplicate conversions between {0} to {1}, get {2}'.format(self.beginhour, self.endhour, r.text))
                 try:
-                    count = len(json.loads(r.text))
+                    content = json.loads(r.text)
                 except Exception as ex:
-                    count = "many"
-                status = self.emiler.sendMessage(title.format(count, self.beginhour, self.endhour), r.text)
-                if status:
-                    self.logger.info('send email success!')
+                    self.logger.error('can not parser broker result to json format')
                 else:
-                    self.logger.info('send email failed!')
+                    for data in content:
+                        idList.append(data.get('event').get('transaction_id'))
         except Exception as ex:
             self.logger.error('error occuar when send http post to broker')
+        return idList
+
+
+    def send(self, title, content):
+        status = self.emiler.sendMessage(title, content)
+        if status:
+            self.logger.info('send email success!')
+        else:
+            self.logger.info('send email failed!')
 
     @property
     def monitor(self):
+        idList = list()
         for selectorList in self.splitoffers:
             selectorStr = str(selectorList).replace("'", '"')
             tid_param = DUPLICATE_CONV_TMPLATE % (self.beginhour, self.endhour, selectorStr)
-            tid_convtime_param = DUPLICATE_CONV_TID_TMPLATE % (self.beginhour, self.endhour, selectorStr)
-            self.send(tid_param, 'use: [transaction_id] find {0} duplicate conversions between {1} to {2}')
-            self.send(tid_convtime_param, 'use: [transaction_id, conv_time] find {0} duplicate conversions between {1} to {2}')
+            idList.extend(self.get_transaction_id(tid_param))
+        title = 'use [transaction_id] find {0} duplicate conversions between {1} to {2}'.format(
+            len(idList), self.beginhour, self.endhour
+        )
+        content = idList
+        self.send(title, content)
+
+        idList = list()
+        for selectorList in self.splitoffers:
+            selectorStr = str(selectorList).replace("'", '"')
+            tid_param = DUPLICATE_CONV_TID_TMPLATE % (self.beginhour, self.endhour, selectorStr)
+            idList.extend(self.get_transaction_id(tid_param))
+        title = 'use [transaction_id, conv_time] find {0} duplicate conversions between {1} to {2}'.format(
+            len(idList), self.beginhour, self.endhour
+        )
+        content = idList
+        self.send(title, content)
+
 
 if __name__ == '__main__':
     d = DuplicateConvMonitor()
