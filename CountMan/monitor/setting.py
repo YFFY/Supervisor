@@ -59,12 +59,15 @@ DUPLICATE_CONV_TMPLATE = """{
       }
     }, {
       "type" : "selector",
+      "dimension" : "status",
+      "value" : "Confirmed"
+    }, {
+      "type" : "selector",
       "dimension" : "log_tye",
       "value" : "1"
     }, {
-      "type" : "selector",
-      "dimension" : "status",
-      "value" : "Confirmed"
+      "type" : "or",
+      "fields" : %s
     } ]
   },
   "granularity" : {
@@ -77,6 +80,10 @@ DUPLICATE_CONV_TMPLATE = """{
     "dimType" : "PLAIN"
   } ],
   "aggregations" : [ {
+    "type" : "longSum",
+    "name" : "click",
+    "fieldName" : "click"
+  }, {
     "type" : "longSum",
     "name" : "conversion",
     "fieldName" : "conversion"
@@ -93,7 +100,7 @@ DUPLICATE_CONV_TMPLATE = """{
   "orderBy" : {
     "type" : "default",
     "columns" : [ ],
-    "limit" : 500000
+    "limit" : 10000
   },
   "context" : null
 }"""
@@ -125,6 +132,9 @@ DUPLICATE_CONV_TID_TMPLATE = """{
       "type" : "selector",
       "dimension" : "status",
       "value" : "Confirmed"
+    }, {
+      "type" : "or",
+      "fields" : %s
     } ]
   },
   "granularity" : {
@@ -425,6 +435,7 @@ NO_DIMENSION_PARAM = '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"da
 SUM_METRIC_MAP = {u'conversion': 0, u'revenue': 0.0, u'profit': 0.0, u'cpc': 0.0, u'arpa': 0.00, u'rpc': 0.0, u'cost': 0.0, u'acpa': 0.0, u'cr': 0.0, u'click': 0}
 
 COMPARE_THRESHOLD = 0.05
+OFFER_SPLIT_OFFSET = 100
 
 
 ###########################################################

@@ -11,7 +11,7 @@ import json
 import string
 import requests
 from CountMan.monitor.setting import DUPLICATE_CONV_TMPLATE, BROKER_URL, DUPLICATE_CONV_TID_TMPLATE
-from CountMan.monitor.util import getLogger, Emailer
+from CountMan.monitor.util import getLogger, Emailer, getSplitOffers
 
 class DuplicateConvMonitor(object):
 
@@ -19,8 +19,9 @@ class DuplicateConvMonitor(object):
         self.format = '%Y-%m-%dT%H:00:00'
         self.emiler = Emailer()
         self.logger = getLogger('convmonitor')
+        self.splitoffers = getSplitOffers()
         self.get_trange()
-        self.get_param()
+        # self.get_param()
 
     def get_trange(self):
         end = datetime.datetime.now()
@@ -56,8 +57,12 @@ class DuplicateConvMonitor(object):
 
     @property
     def monitor(self):
-        self.send(self.tid_param, 'use: [transaction_id] find {0} duplicate conversions between {1} to {2}')
-        self.send(self.tid_convtime_param, 'use: [transaction_id, conv_time] find {0} duplicate conversions between {1} to {2}')
+        for selectorList in self.splitoffers:
+            selectorStr = str(selectorList).replace("'", '"')
+            tid_param = DUPLICATE_CONV_TMPLATE % (self.beginhour, self.endhour, selectorStr)
+            tid_convtime_param = DUPLICATE_CONV_TID_TMPLATE % (self.beginhour, self.endhour, selectorStr)
+            self.send(tid_param, 'use: [transaction_id] find {0} duplicate conversions between {1} to {2}')
+            self.send(tid_convtime_param, 'use: [transaction_id, conv_time] find {0} duplicate conversions between {1} to {2}')
 
 if __name__ == '__main__':
     d = DuplicateConvMonitor()
