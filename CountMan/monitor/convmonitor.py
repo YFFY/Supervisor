@@ -74,6 +74,7 @@ class DuplicateConvMonitor(object):
             tid_list = self.get_transaction_id(tid_param)
             self.logger.info('use signal offer group get {0}'.format(tid_list))
             idList.extend(tid_list)
+            time.sleep(0.5)
         title = 'use [transaction_id] find {0} duplicate conversions between {1} to {2}'.format(
             len(idList), self.beginhour, self.endhour
         )
@@ -88,6 +89,7 @@ class DuplicateConvMonitor(object):
             tid_list = self.get_transaction_id(tid_conv_param)
             self.logger.info('use signal offer group get {0}'.format(tid_list))
             idList.extend(tid_list)
+            time.sleep(0.5)
         title = 'use [transaction_id, conv_time] find {0} duplicate conversions between {1} to {2}'.format(
             len(idList), self.beginhour, self.endhour
         )
