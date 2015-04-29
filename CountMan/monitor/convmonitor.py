@@ -71,7 +71,9 @@ class DuplicateConvMonitor(object):
         for selectorList in self.splitoffers:
             selectorStr = str(selectorList).replace("'", '"')
             tid_param = DUPLICATE_CONV_TMPLATE % (self.beginhour, self.endhour, selectorStr)
-            idList.extend(self.get_transaction_id(tid_param))
+            tid_list = self.get_transaction_id(tid_param)
+            self.logger.info('use signal offer group get {0}'.format(tid_list))
+            idList.extend(tid_list)
         title = 'use [transaction_id] find {0} duplicate conversions between {1} to {2}'.format(
             len(idList), self.beginhour, self.endhour
         )
@@ -82,8 +84,10 @@ class DuplicateConvMonitor(object):
         idList = list()
         for selectorList in self.splitoffers:
             selectorStr = str(selectorList).replace("'", '"')
-            tid_param = DUPLICATE_CONV_TID_TMPLATE % (self.beginhour, self.endhour, selectorStr)
-            idList.extend(self.get_transaction_id(tid_param))
+            tid_conv_param = DUPLICATE_CONV_TID_TMPLATE % (self.beginhour, self.endhour, selectorStr)
+            tid_list = self.get_transaction_id(tid_conv_param)
+            self.logger.info('use signal offer group get {0}'.format(tid_list))
+            idList.extend(tid_list)
         title = 'use [transaction_id, conv_time] find {0} duplicate conversions between {1} to {2}'.format(
             len(idList), self.beginhour, self.endhour
         )
