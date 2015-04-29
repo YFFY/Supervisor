@@ -40,17 +40,20 @@ class DuplicateConvMonitor(object):
         idList = list()
         try:
             r = requests.post(BROKER_URL, data = broker_param)
-            if t.text == '[ ]':
+            self.logger.info(r.text)
+            if r.text == '[ ]':
                 self.logger.info('not find duplicate conversions between {0} to {1}, get {2}'.format(self.beginhour, self.endhour, r.text))
             else:
                 try:
                     content = json.loads(r.text)
+                    self.logger.info(content)
                 except Exception as ex:
                     self.logger.error('can not parser broker result to json format')
                 else:
                     for data in content:
                         idList.append(data.get('event').get('transaction_id'))
         except Exception as ex:
+            raise ex
             self.logger.error('error occuar when send http post to broker')
         return idList
 
@@ -73,7 +76,8 @@ class DuplicateConvMonitor(object):
             len(idList), self.beginhour, self.endhour
         )
         content = str(idList)
-        self.send(title, content)
+        if len(idList) > 0:
+            self.send(title, content)
 
         idList = list()
         for selectorList in self.splitoffers:
@@ -84,7 +88,8 @@ class DuplicateConvMonitor(object):
             len(idList), self.beginhour, self.endhour
         )
         content = str(idList)
-        self.send(title, content)
+        if len(idList) > 0:
+            self.send(title, content)
 
 
 if __name__ == '__main__':
