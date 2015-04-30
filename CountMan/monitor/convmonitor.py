@@ -40,7 +40,7 @@ class DuplicateConvMonitor(object):
         idList = list()
         try:
             r = requests.post(BROKER_URL, data = broker_param)
-            self.logger.info(r.text)
+            self.logger.info('use broker param: {0} get {1}'.format(broker_param, r.tex))
             if r.text == '[ ]':
                 self.logger.info('not find duplicate conversions between {0} to {1}, get {2}'.format(self.beginhour, self.endhour, r.text))
             else:
