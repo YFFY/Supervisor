@@ -3,16 +3,9 @@
 
 import os
 import sys
-import logging
 from datetime import datetime, timedelta
 
-druidbatch_file_suffix = '2015-04-29T08_2015-04-29T09_yfnormalpf.json'
 
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(filename)s[line:%(lineno)d] [%(levelname)s] %(message)s',
-                    datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename='upload.log',
-                    filemode='a')
 
 class Uploader(object):
 
@@ -59,11 +52,11 @@ class Uploader(object):
         if status == 0:
             if self.checkSuccess():
                 self.deleteLocalFile()
-                logging.info('get file: {0}, upload to s3 success'.format(self.fileName))
+                print 'get file: {0}, upload to s3 success'.format(self.fileName)
             else:
-                logging.error('get file: {0}, upload to s3 failed'.format(self.fileName))
+                print 'get file: {0}, upload to s3 failed'.format(self.fileName)
         else:
-            logging.error('execute upload command: {0} failed'.format(uploadCmd))
+            print 'execute upload command: {0} failed'.format(uploadCmd)
 
     def checkSuccess(self):
 
