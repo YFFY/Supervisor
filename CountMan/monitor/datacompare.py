@@ -1,8 +1,14 @@
 #! /usr/bin/env python
 # --*-- coding:utf-8 --*--
 
-from util import *
 
+
+
+import os
+import sys
+sys.path.append(os.path.split(os.path.split(os.path.abspath(sys.path[0]))[0])[0])
+
+from util import *
 
 class DataComparer(object):
 
@@ -30,15 +36,13 @@ class DataComparer(object):
             return 0, 0
 
     def getHiveResult(self):
-        clickSql = """hive -e 'use ym_system;select count(1) from ym_hive where part1='{1}' and log_type=0 and hour(time_stamp)={2};'""".format(
+        clickSql = """hive -e 'use ym_system;select count(1) from ym_hive where part1="{1}" and log_type=0 and hour(regexp_replace(time_stamp,"T"," "))={2};'""".format(
             IMPALA_IP, self.today, self.hour
         )
-        convSql = """hive -e 'use ym_system;select count(1) from ym_hive where part1='{1}' and log_type=1 and hour(time_stamp)={2};'""".format(
+        convSql = """hive -e 'use ym_system;select count(1) from ym_hive where part1="{1}" and log_type=1 and hour(regexp_replace(time_stamp,"T"," "))={2};'""".format(
             IMPALA_IP, self.today, self.hour
         )
-        print 'get hive click sql: {0}'.format(clickSql)
-        print 'get hive conv sql: {0}'.format(convSql)
-        return int(os.popen(clickSql).read().split()[-3]), int(os.popen(convSql).read().split()[-3])
+        return int(os.popen(clickSql).readlines()[-1].strip()), int(os.popen(convSql).readlines()[-1].strip())
 
 
     def getImpalaResult(self):
@@ -48,8 +52,6 @@ class DataComparer(object):
         convSql = """impala-shell -i {0} -q 'use ym_system;select count(1) from ym_impala where part1="{1}" and log_tye =1 and hour(time_stamp)={2};'""".format(
             IMPALA_IP, self.today, self.hour
         )
-        print 'get impala click sql: {0}'.format(clickSql)
-        print 'get impala conv sql: {0}'.format(convSql)
         return int(os.popen(clickSql).read().split()[-3]), int(os.popen(convSql).read().split()[-3])
 
     def isEqual(self):
@@ -62,8 +64,8 @@ class DataComparer(object):
         return druidResult, hiveResult, impalaResult
 
     def sendEmail(self):
-        equal = self.isEqual()
-        if not equal:
+        result = self.isEqual()
+        if not isinstance(result, tuple):
             title = 'data not equal between druid and hive and impala at {0} {1}'.format(self.today, self.hour)
             content = 'druid: {0}\nhive: {1}\nimpala: {2}'.format(equal[0], equal[1], equal[2])
             self.emailer.sendMessage(title, content)
@@ -72,4 +74,4 @@ class DataComparer(object):
 
 if __name__ == '__main__':
     dc = DataComparer()
-    dc.isEqual()
+    dc.sendEmail()
