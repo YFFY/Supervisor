@@ -49,6 +49,11 @@ def getHourTimestamp():
     previousHour = currentHour + datetime.timedelta(hours=-1)
     return int(time.mktime(time.strptime(previousHour.strftime('%Y-%m-%d %H'), '%Y-%m-%d %H'))),int(time.mktime(time.strptime(currentHour.strftime('%Y-%m-%d %H'), '%Y-%m-%d %H')))
 
+def getHourRange(houroffset=-1):
+    currrent = datetime.datetime.now()
+    previousHour = currrent.hour - 1
+    return currrent.strftime('%Y-%m-%d'), previousHour
+
 
 def getOfferIdList():
     offList = list()
@@ -323,4 +328,4 @@ class Equaler(object):
         return True
 
 if __name__ == '__main__':
-    print getSplitOffers()
+    print getHourRange()
