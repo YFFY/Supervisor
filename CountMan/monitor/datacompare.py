@@ -36,20 +36,20 @@ class DataComparer(object):
             return 0, 0
 
     def getHiveResult(self):
-        clickSql = """hive -e 'use ym_system;select count(1) from ym_hive where part1="{1}" and log_type=0 and hour(regexp_replace(time_stamp,"T"," "))={2};'""".format(
+        clickSql = """hive -e 'use ym_system;select count(distinct(transaction_id)) from ym_hive where part1="{1}" and log_type=0 and hour(regexp_replace(time_stamp,"T"," "))={2};'""".format(
             IMPALA_IP, self.today, self.hour
         )
-        convSql = """hive -e 'use ym_system;select count(1) from ym_hive where part1="{1}" and log_type=1 and hour(regexp_replace(time_stamp,"T"," "))={2};'""".format(
+        convSql = """hive -e 'use ym_system;select count(distinct(transaction_id)) from ym_hive where part1="{1}" and log_type=1 and hour(regexp_replace(time_stamp,"T"," "))={2};'""".format(
             IMPALA_IP, self.today, self.hour
         )
         return int(os.popen(clickSql).readlines()[-1].strip()), int(os.popen(convSql).readlines()[-1].strip())
 
 
     def getImpalaResult(self):
-        clickSql = """impala-shell -i {0} -q 'use ym_system;select count(1) from ym_impala where part1="{1}" and log_tye =0 and hour(time_stamp)={2};'""".format(
+        clickSql = """impala-shell -i {0} -q 'use ym_system;select count(distinct(transaction_id)) from ym_impala where part1="{1}" and log_tye =0 and hour(time_stamp)={2};'""".format(
             IMPALA_IP, self.today, self.hour
         )
-        convSql = """impala-shell -i {0} -q 'use ym_system;select count(1) from ym_impala where part1="{1}" and log_tye =1 and hour(time_stamp)={2};'""".format(
+        convSql = """impala-shell -i {0} -q 'use ym_system;select count(distinct(transaction_id)) from ym_impala where part1="{1}" and log_tye =1 and hour(time_stamp)={2};'""".format(
             IMPALA_IP, self.today, self.hour
         )
         return int(os.popen(clickSql).read().split()[-3]), int(os.popen(convSql).read().split()[-3])
