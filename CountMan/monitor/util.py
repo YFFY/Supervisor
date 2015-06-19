@@ -102,14 +102,22 @@ def getSplitOffers():
 
 def getResponse(param, url = QUERYURL):
     geturl = (url + param) % getTimestamp()
-    try:
-        r = requests.get(geturl)
-        if r.status_code == 200:
-            return r.text
+    tryTime = 0
+    while tryTime < MAXTRYTIME:
+        try:
+            r = requests.get(geturl)
+        except Exception as ex:
+            continue
         else:
-            return None
-    except Exception as ex:
-        traceback.print_exc()
+            try:
+                json.loads(r.text)
+            except Exception as ex:
+                continue
+            else:
+                return r.text
+        tryTime += 1
+    return '{"data":{"data":[]}}'
+
 
 def getResult(param, url = QUERYURL):
     geturl = url + param
