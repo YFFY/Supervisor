@@ -293,6 +293,8 @@ QUERYPARAM = {
     "YMUNAUTHCOUNTRY" : '{"settings":{"time":{"start":%d,"end":%d,"timezone":0},"report_id":"1321231321","data_source":"ymds_druid_datasource","pagination":{"size":1000000,"page":0}},"group":[],"data":["conversion2"],"filters":{"$and":{"datasource":{"$neq":"hasoffer"},"log_tye":{"$eq":1},"status":{"$eq":"Rejected"},"message":{"$eq":"unauthenticated country"}}},"sort":[]}'
 }
 
+MAXTRYTIME = 3
+
 if ISDEBUG:
     REALTIMEDIR = "/data/tmpdata/druid_consumer_log"
     MONGODB_IP = "172.20.1.184"
